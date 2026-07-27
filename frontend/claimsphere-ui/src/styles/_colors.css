@@ -1,0 +1,39 @@
+/* ==========================================
+   Semantic Color Classes
+========================================== */
+
+.bg-primary {
+  background-color: var(--color-primary);
+}
+
+.bg-surface {
+  background-color: var(--color-surface);
+}
+
+.bg-success {
+  background-color: var(--color-success);
+}
+
+.bg-warning {
+  background-color: var(--color-warning);
+}
+
+.bg-error {
+  background-color: var(--color-error);
+}
+
+.text-primary {
+  color: var(--color-text-primary);
+}
+
+.text-secondary {
+  color: var(--color-text-secondary);
+}
+
+.text-brand {
+  color: var(--color-primary);
+}
+
+.border-default {
+  border: 1px solid var(--color-border);
+}

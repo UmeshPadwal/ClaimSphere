@@ -1,0 +1,64 @@
+:root {
+
+  /*==========================
+      Brand Colors
+===========================*/
+
+  --color-primary: #2563eb;
+  --color-primary-dark: #1d4ed8;
+  --color-secondary: #7c3aed;
+
+  --color-success: #22c55e;
+  --color-warning: #f59e0b;
+  --color-error: #ef4444;
+
+  /*==========================
+      Background
+===========================*/
+
+  --color-background: #f8fafc;
+  --color-surface: #ffffff;
+
+  /*==========================
+      Text
+===========================*/
+
+  --color-text-primary: #111827;
+  --color-text-secondary: #6b7280;
+
+  /*==========================
+      Border
+===========================*/
+
+  --color-border: #e5e7eb;
+
+  /*==========================
+      Border Radius
+===========================*/
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+
+  /*==========================
+      Shadow
+===========================*/
+
+  --shadow-sm: 0 2px 4px rgba(0,0,0,.08);
+
+  --shadow-md: 0 8px 20px rgba(0,0,0,.08);
+
+  --shadow-lg: 0 18px 40px rgba(0,0,0,.12);
+
+  /*==========================
+      Transition
+===========================*/
+
+  --transition-fast: .2s ease;
+
+  --transition-normal: .3s ease;
+
+  --transition-slow: .5s ease;
+
+}
