@@ -1,12 +1,15 @@
 package claimsphere_api.service;
 
+import claimsphere_api.dto.ClaimRequest;
+import claimsphere_api.dto.ClaimResponse;
 import claimsphere_api.entity.Claim;
 
 import java.util.List;
 
 public interface ClaimService {
 
-    Claim saveClaim(Claim claim);
+
+    ClaimResponse saveClaim(ClaimRequest request);
 
     List<Claim> getAllClaims();
 

@@ -1,6 +1,12 @@
 import { Routes } from '@angular/router';
+import { CreateClaimComponent } from './features/claims/pages/create-claim/create-claim';
 
 export const routes: Routes = [
+
+  {
+    path: '',
+    component: CreateClaimComponent,
+  },
   {
     path: '',
     loadComponent: () =>
@@ -14,6 +20,8 @@ export const routes: Routes = [
           import('./features/dashboard/dashboard/dashboard')
             .then(m => m.Dashboard)
       }
-    ]
+    ],
   }
+  
+  
 ];

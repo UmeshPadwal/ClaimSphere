@@ -1,5 +1,7 @@
 package claimsphere_api.service.impl;
 
+import claimsphere_api.dto.ClaimRequest;
+import claimsphere_api.dto.ClaimResponse;
 import claimsphere_api.entity.Claim;
 import claimsphere_api.exception.ResourceNotFoundException;
 import claimsphere_api.repository.ClaimRepository;
@@ -18,8 +20,24 @@ public class ClaimServiceImpl implements ClaimService {
     }
 
     @Override
-    public Claim saveClaim(Claim claim) {
-        return claimRepository.save(claim);
+    public ClaimResponse saveClaim(ClaimRequest request) {
+
+        Claim claim = new Claim();
+
+        claim.setClaimNumber(request.getClaimNumber());
+        claim.setPolicyNumber(request.getPolicyNumber());
+        claim.setStatus(request.getStatus());
+        claim.setAmount(request.getAmount());
+
+        Claim savedClaim = claimRepository.save(claim);
+
+        return new ClaimResponse(
+                savedClaim.getId(),
+                savedClaim.getClaimNumber(),
+                savedClaim.getPolicyNumber(),
+                savedClaim.getStatus(),
+                savedClaim.getAmount()
+        );
     }
 
     @Override
