@@ -34,7 +34,7 @@ public class ClaimController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Claim>> getAllClaims() {
+    public ResponseEntity<List<ClaimResponse>> getAllClaims()  {
 
         return ResponseEntity.ok(
                 claimService.getAllClaims());
@@ -42,11 +42,11 @@ public class ClaimController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Claim> getClaimById(
+    public ResponseEntity<ClaimResponse> getClaimById(
             @PathVariable Long id) {
 
-        Claim claim = claimService.getClaimById(id);
+        ClaimResponse response = claimService.getClaimById(id);
 
-        return ResponseEntity.ok(claim);
+        return ResponseEntity.ok(response);
     }
 }

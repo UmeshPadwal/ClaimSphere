@@ -39,17 +39,37 @@ public class ClaimServiceImpl implements ClaimService {
                 savedClaim.getAmount()
         );
     }
-
     @Override
-    public List<Claim> getAllClaims() {
-        return claimRepository.findAll();
+    public List<ClaimResponse> getAllClaims() {
+
+        List<Claim> claims = claimRepository.findAll();
+
+        return claims.stream()
+                .map(this::mapToResponse)
+                .toList();
     }
 
     @Override
-    public Claim getClaimById(Long id) {
-        return claimRepository.findById(id)
+    public ClaimResponse getClaimById(Long id) {
+
+        Claim claim = claimRepository.findById(id)
                 .orElseThrow(() ->
                         new ResourceNotFoundException(
                                 "Claim not found with id " + id));
+
+        return mapToResponse(claim);
+    }
+
+    private ClaimResponse mapToResponse(Claim claim) {
+
+        ClaimResponse response = new ClaimResponse();
+
+        response.setId(claim.getId());
+        response.setClaimNumber(claim.getClaimNumber());
+        response.setPolicyNumber(claim.getPolicyNumber());
+        response.setStatus(claim.getStatus());
+        response.setAmount(claim.getAmount());
+
+        return response;
     }
 }

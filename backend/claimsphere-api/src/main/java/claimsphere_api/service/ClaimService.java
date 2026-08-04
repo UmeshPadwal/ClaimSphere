@@ -11,9 +11,9 @@ public interface ClaimService {
 
     ClaimResponse saveClaim(ClaimRequest request);
 
-    List<Claim> getAllClaims();
+    List<ClaimResponse> getAllClaims();
 
-    Claim getClaimById(Long id);
+    ClaimResponse getClaimById(Long id);
 //
 //    Claim updateClaim(Long id, Claim claim);
 //
