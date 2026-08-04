@@ -7,6 +7,7 @@ import {
 
 import { ClaimService } from '../../services/claim.service';
 import { ClaimRequest } from '../../models/claim-request';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-create-claim',
@@ -17,76 +18,73 @@ import { ClaimRequest } from '../../models/claim-request';
 })
 export class CreateClaimComponent {
 
-  
 
+  private router = inject(Router);
   private fb = inject(FormBuilder);
 
   private claimService = inject(ClaimService);
 
- claimForm = this.fb.group({
+  isEditMode = false;
 
-  claimNumber: [
-    '',
-    Validators.required
-  ],
+  claimForm = this.fb.group({
 
-  policyNumber: [
-    '',
-    Validators.required
-  ],
+    claimNumber: [
+      '',
+      Validators.required
+    ],
 
-  status: [
-    'OPEN',
-    Validators.required
-  ],
+    policyNumber: [
+      '',
+      Validators.required
+    ],
 
-  amount: [
-    0,
-    [
-      Validators.required,
-      Validators.min(1)
+    status: [
+      'OPEN',
+      Validators.required
+    ],
+
+    amount: [
+      0,
+      [
+        Validators.required,
+        Validators.min(1)
+      ]
     ]
-  ]
-
-});
-
-onSubmit(): void {
-
-  if (this.claimForm.invalid) {
-    this.claimForm.markAllAsTouched();
-    return;
-  }
-this.claimService
-  .createClaim(this.claimForm.getRawValue() as ClaimRequest)
-  .subscribe({
-
-    next: (response) => {
-
-      console.log('Claim Created Successfully');
-      console.log(response);
-
-      alert('Claim created successfully!');
-
-      this.claimForm.reset({
-        claimNumber: '',
-        policyNumber: '',
-        status: 'OPEN',
-        amount: 0
-      });
-
-    },
-
-    error: (error) => {
-
-      console.error(error);
-
-      alert('Something went wrong!');
-
-    }
 
   });
 
-}
+  onSubmit(): void {
+
+    if (this.claimForm.invalid) {
+      this.claimForm.markAllAsTouched();
+      return;
+    }
+    this.claimService
+      .createClaim(this.claimForm.getRawValue() as ClaimRequest)
+      .subscribe({
+
+        next: (response) => {
+
+          this.router.navigate(['/claims']);
+
+        },
+
+        error: (error) => {
+
+          console.error(error);
+
+          alert('Something went wrong!');
+
+        }
+
+      });
+
+  }
+  cancel(): void {
+
+    this.router.navigate(['/claims']);
+
+  }
 
 }
 

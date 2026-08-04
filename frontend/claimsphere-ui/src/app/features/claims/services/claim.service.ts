@@ -26,4 +26,10 @@ export class ClaimService {
 
 }
 
+getAllClaims(): Observable<ClaimResponse[]> {
+
+  return this.http.get<ClaimResponse[]>(this.apiUrl);
+
+}
+
 }

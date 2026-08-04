@@ -5,23 +5,22 @@ export const routes: Routes = [
 
   {
     path: '',
-    component: CreateClaimComponent,
+    redirectTo: 'claims',
+    pathMatch: 'full'
   },
-  {
-    path: '',
-    loadComponent: () =>
-      import('./layouts/main-layout/main-layout')
-        .then(m => m.MainLayout),
 
-    children: [
-      {
-        path: '',
-        loadComponent: () =>
-          import('./features/dashboard/dashboard/dashboard')
-            .then(m => m.Dashboard)
-      }
-    ],
+  {
+    path: 'claims',
+    loadComponent: () =>
+      import('./features/claims/pages/claim-list/claim-list')
+        .then(m => m.ClaimListComponent)
+  },
+
+  {
+    path: 'claims/create',
+    loadComponent: () =>
+      import('./features/claims/pages/create-claim/create-claim')
+        .then(m => m.CreateClaimComponent)
   }
-  
-  
+
 ];

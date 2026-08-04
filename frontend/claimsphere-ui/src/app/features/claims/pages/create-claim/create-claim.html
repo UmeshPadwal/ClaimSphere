@@ -1,68 +1,82 @@
-<div class="form-container">
+<div class="claim-container">
 
-  <h2>Create Claim</h2>
+  <div class="claim-card">
 
-  <form [formGroup]="claimForm" (ngSubmit)="onSubmit()">
+    <h2>{{ isEditMode ? 'Update Claim' : 'Create Claim' }}</h2>
 
-    <div class="form-group">
+    <form
+      [formGroup]="claimForm"
+      (ngSubmit)="onSubmit()">
 
-      <label>Claim Number</label>
+      <div class="form-group">
 
-      <input
-        type="text"
-        formControlName="claimNumber">
+        <label>Claim Number</label>
 
-      @if (
-      claimForm.get('claimNumber')?.touched &&
-      claimForm.get('claimNumber')?.hasError('required')
-      ) {
+        <input
+          type="text"
+          formControlName="claimNumber"
+          placeholder="Enter Claim Number">
 
-      <div class="error">
-        Claim Number is required
       </div>
 
-      }
+      <div class="form-group">
 
-    </div>
+        <label>Policy Number</label>
 
-    <div class="form-group">
+        <input
+          type="text"
+          formControlName="policyNumber"
+          placeholder="Enter Policy Number">
 
-      <label>Policy Number</label>
+      </div>
 
-      <input
-        type="text"
-        formControlName="policyNumber">
+      <div class="form-group">
 
-    </div>
+        <label>Status</label>
 
-    <div class="form-group">
+        <select formControlName="status">
 
-      <label>Status</label>
+          <option value="OPEN">OPEN</option>
+          <option value="IN_PROGRESS">IN_PROGRESS</option>
+          <option value="CLOSED">CLOSED</option>
 
-      <select formControlName="status">
-        <option value="OPEN">OPEN</option>
-        <option value="PENDING">PENDING</option>
-        <option value="CLOSED">CLOSED</option>
-      </select>
+        </select>
 
-    </div>
+      </div>
 
-    <div class="form-group">
+      <div class="form-group">
 
-      <label>Amount</label>
+        <label>Amount</label>
 
-      <input
-        type="number"
-        formControlName="amount">
+        <input
+          type="number"
+          formControlName="amount"
+          placeholder="Enter Claim Amount">
 
-    </div>
+      </div>
 
-    <button type="submit">
+      <div class="button-group">
 
-      Save Claim
+        <button
+          type="button"
+          class="cancel-btn"
+          (click)="cancel()">
 
-    </button>
+          Cancel
 
-  </form>
+        </button>
+
+        <button
+          type="submit">
+
+          {{ isEditMode ? 'Update Claim' : 'Save Claim' }}
+
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
 
 </div>

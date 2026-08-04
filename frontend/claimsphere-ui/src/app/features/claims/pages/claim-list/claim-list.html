@@ -1,0 +1,125 @@
+<div class="container">
+
+  <div class="header">
+
+    <div>
+      <h2>Claim Management</h2>
+      <p class="subtitle">
+        Total Claims: {{ claims.length }}
+      </p>
+    </div>
+
+    <button
+      class="create-btn"
+      (click)="goToCreateClaim()">
+
+      + Create Claim
+
+    </button>
+
+  </div>
+
+  @if (claims.length === 0) {
+
+    <div class="empty-state">
+
+      <h3>No Claims Found</h3>
+
+      <p>Create your first insurance claim.</p>
+
+      <button
+        class="create-btn"
+        (click)="goToCreateClaim()">
+
+        Create Claim
+
+      </button>
+
+    </div>
+
+  } @else {
+
+    <table>
+
+      <thead>
+
+        <tr>
+
+          <th>ID</th>
+          <th>Claim Number</th>
+          <th>Policy Number</th>
+          <th>Status</th>
+          <th>Amount</th>
+          <th>Actions</th>
+
+        </tr>
+
+      </thead>
+
+      <tbody>
+
+        @for (claim of claims; track claim.id) {
+
+          <tr>
+
+            <td>#{{ claim.id }}</td>
+
+            <td>{{ claim.claimNumber }}</td>
+
+            <td>{{ claim.policyNumber }}</td>
+
+            <td>
+
+              <span
+                class="status"
+                [class.open]="claim.status === 'OPEN'"
+                [class.closed]="claim.status === 'CLOSED'"
+                [class.progress]="claim.status === 'IN_PROGRESS'">
+
+                {{ claim.status }}
+
+              </span>
+
+            </td>
+
+            <td>₹ {{ claim.amount }}</td>
+
+            <td class="action-column">
+
+              <button
+                class="view-btn"
+                (click)="viewClaim(claim.id)">
+
+                View
+
+              </button>
+
+              <button
+                class="edit-btn"
+                (click)="editClaim(claim.id)">
+
+                Edit
+
+              </button>
+
+              <button
+                class="delete-btn"
+                (click)="deleteClaim(claim.id)">
+
+                Delete
+
+              </button>
+
+            </td>
+
+          </tr>
+
+        }
+
+      </tbody>
+
+    </table>
+
+  }
+
+</div>
