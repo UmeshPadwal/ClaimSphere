@@ -33,6 +33,16 @@ public class ClaimController {
                 .body(response);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<ClaimResponse> updateClaim(
+            @PathVariable Long id,
+            @Valid @RequestBody ClaimRequest request) {
+
+        ClaimResponse response = claimService.updateClaim(id, request);
+
+        return ResponseEntity.ok(response);
+    }
+
     @GetMapping
     public ResponseEntity<List<ClaimResponse>> getAllClaims()  {
 
@@ -48,5 +58,14 @@ public class ClaimController {
         ClaimResponse response = claimService.getClaimById(id);
 
         return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteClaim(
+            @PathVariable Long id) {
+
+        claimService.deleteClaim(id);
+
+        return ResponseEntity.noContent().build();
     }
 }

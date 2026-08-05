@@ -60,6 +60,24 @@ public class ClaimServiceImpl implements ClaimService {
         return mapToResponse(claim);
     }
 
+    @Override
+    public ClaimResponse updateClaim(Long id, ClaimRequest request) {
+
+        Claim existingClaim = claimRepository.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Claim not found with id " + id));
+
+        existingClaim.setClaimNumber(request.getClaimNumber());
+        existingClaim.setPolicyNumber(request.getPolicyNumber());
+        existingClaim.setStatus(request.getStatus());
+        existingClaim.setAmount(request.getAmount());
+
+        Claim updatedClaim = claimRepository.save(existingClaim);
+
+        return mapToResponse(updatedClaim);
+    }
+
     private ClaimResponse mapToResponse(Claim claim) {
 
         ClaimResponse response = new ClaimResponse();
@@ -71,5 +89,17 @@ public class ClaimServiceImpl implements ClaimService {
         response.setAmount(claim.getAmount());
 
         return response;
+    }
+
+    @Override
+    public void deleteClaim(Long id) {
+
+        Claim claim = claimRepository.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Claim not found with id " + id));
+
+        claimRepository.delete(claim);
+
     }
 }
