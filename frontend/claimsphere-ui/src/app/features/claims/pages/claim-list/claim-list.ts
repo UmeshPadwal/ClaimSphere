@@ -50,19 +50,49 @@ export class ClaimListComponent implements OnInit {
 
 viewClaim(id: number): void {
 
-  console.log('View Claim:', id);
+  this.router.navigate(['/claims/view', id]);
 
 }
 
 editClaim(id: number): void {
 
-  console.log('Edit Claim:', id);
+  this.router.navigate(['/claims/edit', id]);
 
 }
 
 deleteClaim(id: number): void {
 
-  console.log('Delete Claim:', id);
+  const confirmed = confirm(
+    'Are you sure you want to delete this claim?'
+  );
+
+  if (!confirmed) {
+
+    return;
+
+  }
+
+  this.claimService
+    .deleteClaim(id)
+    .subscribe({
+
+      next: () => {
+
+        alert('Claim deleted successfully!');
+
+        this.loadClaims();
+
+      },
+
+      error: error => {
+
+        console.error(error);
+
+        alert('Unable to delete claim.');
+
+      }
+
+    });
 
 }
 }

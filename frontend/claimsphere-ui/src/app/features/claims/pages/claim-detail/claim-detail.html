@@ -1,0 +1,65 @@
+<div class="container">
+
+  <h2>Claim Details</h2>
+
+  @if(claim){
+
+  <div class="detail-card">
+
+    <div class="row">
+
+      <span>Claim Number</span>
+
+      <strong>{{claim.claimNumber}}</strong>
+
+    </div>
+
+    <div class="row">
+
+      <span>Policy Number</span>
+
+      <strong>{{claim.policyNumber}}</strong>
+
+    </div>
+
+    <div class="row">
+
+      <span>Status</span>
+
+      <strong>{{claim.status}}</strong>
+
+    </div>
+
+    <div class="row">
+
+      <span>Amount</span>
+
+      <strong>₹ {{claim.amount}}</strong>
+
+    </div>
+
+    <div class="buttons">
+
+      <button
+        class="back-btn"
+        (click)="goBack()">
+
+        Back
+
+      </button>
+
+      <button
+        class="edit-btn"
+        (click)="editClaim()">
+
+        Edit
+
+      </button>
+
+    </div>
+
+  </div>
+
+  }
+
+</div>

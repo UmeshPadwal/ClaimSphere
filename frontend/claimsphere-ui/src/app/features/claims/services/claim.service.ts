@@ -15,20 +15,48 @@ export class ClaimService {
   private http = inject(HttpClient);
 
   private readonly apiUrl =
-  `${environment.apiUrl}/claims`;
+    `${environment.apiUrl}/claims`;
 
   createClaim(request: ClaimRequest): Observable<ClaimResponse> {
 
-  return this.http.post<ClaimResponse>(
-    this.apiUrl,
-    request
+    return this.http.post<ClaimResponse>(
+      this.apiUrl,
+      request
+    );
+
+  }
+
+  getAllClaims(): Observable<ClaimResponse[]> {
+
+    return this.http.get<ClaimResponse[]>(this.apiUrl);
+
+  }
+
+  getClaimById(id: number): Observable<ClaimResponse> {
+
+    return this.http.get<ClaimResponse>(
+      `${this.apiUrl}/${id}`
+    );
+
+  }
+
+  updateClaim(
+    id: number,
+    request: ClaimRequest
+  ): Observable<ClaimResponse> {
+
+    return this.http.put<ClaimResponse>(
+      `${this.apiUrl}/${id}`,
+      request
+    );
+
+  }
+
+  deleteClaim(id: number): Observable<void> {
+
+  return this.http.delete<void>(
+    `${this.apiUrl}/${id}`
   );
-
-}
-
-getAllClaims(): Observable<ClaimResponse[]> {
-
-  return this.http.get<ClaimResponse[]>(this.apiUrl);
 
 }
 
