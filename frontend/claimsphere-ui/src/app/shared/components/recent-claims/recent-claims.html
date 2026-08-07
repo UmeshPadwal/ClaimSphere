@@ -3,40 +3,30 @@
     <div class="header">
 
         <h2>
-
             Recent Claims
-
         </h2>
-
-        <a routerLink="/claims">
-
-            View All
-
-        </a>
 
     </div>
 
     <table>
-
         <thead>
+            <tr>
 
-        <tr>
+                <th>Claim</th>
 
-            <th>Claim</th>
+                <th>Status</th>
 
-            <th>Status</th>
+                <th>Amount</th>
 
-            <th>Amount</th>
+                <th></th>
 
-            <th></th>
-
-        </tr>
+            </tr>
 
         </thead>
 
         <tbody>
 
-        @for(claim of claims.slice(0,5); track claim.id){
+            @for(claim of claims.slice(0,5); track claim.id){
 
             <tr>
 
@@ -58,7 +48,7 @@
 
             </tr>
 
-        }
+            }
 
         </tbody>
 

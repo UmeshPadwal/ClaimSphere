@@ -27,6 +27,31 @@ export class CreateClaimComponent implements OnInit {
   isEditMode = false;
   claimId!: number;
 
+  claimTypes = [
+    'Vehicle',
+    'Health',
+    'Property',
+    'Travel'
+  ];
+
+  cities = [
+    'Pune',
+    'Mumbai',
+    'Delhi',
+    'Bangalore',
+    'Hyderabad',
+    'Chennai',
+    'Kolkata',
+    'Ahmedabad'
+  ];
+
+  statuses = [
+    'OPEN',
+    'PENDING',
+    'IN_PROGRESS',
+    'CLOSED'
+  ];
+
 
   ngOnInit(): void {
 
@@ -47,6 +72,27 @@ export class CreateClaimComponent implements OnInit {
 
   }
 
+  claimForm = this.fb.group({
+
+    claimNumber: ['', Validators.required],
+
+    policyNumber: ['', Validators.required],
+
+    customerName: ['', Validators.required],
+
+    claimType: ['', Validators.required],
+
+    city: ['', Validators.required],
+
+    status: ['', Validators.required],
+
+    amount: [null as number | null, [Validators.required, Validators.min(1)]],
+
+    incidentDate: ['', Validators.required],
+
+    reportedDate: ['', Validators.required]
+
+  });
 
 
   private loadClaim(): void {
@@ -64,7 +110,12 @@ export class CreateClaimComponent implements OnInit {
             claimNumber: response.claimNumber,
             policyNumber: response.policyNumber,
             status: response.status,
-            amount: response.amount
+            customerName: response.customerName,
+            claimType: response.claimType,
+            city: response.city,
+            amount: response.amount,
+            incidentDate: response.incidentDate,
+            reportedDate: response.reportedDate
 
           });
 
@@ -80,32 +131,7 @@ export class CreateClaimComponent implements OnInit {
 
   }
 
-  claimForm = this.fb.group({
 
-    claimNumber: [
-      '',
-      Validators.required
-    ],
-
-    policyNumber: [
-      '',
-      Validators.required
-    ],
-
-    status: [
-      'OPEN',
-      Validators.required
-    ],
-
-    amount: [
-      0,
-      [
-        Validators.required,
-        Validators.min(1)
-      ]
-    ]
-
-  });
 
   onSubmit(): void {
 

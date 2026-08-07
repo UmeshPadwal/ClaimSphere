@@ -8,50 +8,114 @@
       [formGroup]="claimForm"
       (ngSubmit)="onSubmit()">
 
-      <div class="form-group">
+      <div class="form-grid">
 
-        <label>Claim Number</label>
+        <!-- Claim Number -->
+        <div class="form-group">
+          <label>Claim Number</label>
+          <input
+            type="text"
+            formControlName="claimNumber"
+            placeholder="Enter Claim Number">
+        </div>
 
-        <input
-          type="text"
-          formControlName="claimNumber"
-          placeholder="Enter Claim Number">
+        <!-- Policy Number -->
+        <div class="form-group">
+          <label>Policy Number</label>
+          <input
+            type="text"
+            formControlName="policyNumber"
+            placeholder="Enter Policy Number">
+        </div>
 
-      </div>
+        <!-- Customer Name -->
+        <div class="form-group">
+          <label>Customer Name</label>
+          <input
+            type="text"
+            formControlName="customerName"
+            placeholder="Enter Customer Name">
+        </div>
 
-      <div class="form-group">
+        <!-- Claim Type -->
+        <div class="form-group">
+          <label>Claim Type</label>
 
-        <label>Policy Number</label>
+          <select formControlName="claimType">
 
-        <input
-          type="text"
-          formControlName="policyNumber"
-          placeholder="Enter Policy Number">
+            <option value="">Select Claim Type</option>
 
-      </div>
+            @for(type of claimTypes; track type){
 
-      <div class="form-group">
+              <option [value]="type">
+                {{ type }}
+              </option>
 
-        <label>Status</label>
+            }
 
-        <select formControlName="status">
+          </select>
+        </div>
 
-          <option value="OPEN">OPEN</option>
-          <option value="IN_PROGRESS">IN_PROGRESS</option>
-          <option value="CLOSED">CLOSED</option>
+        <!-- City -->
+        <div class="form-group">
+          <label>City</label>
 
-        </select>
+          <select formControlName="city">
 
-      </div>
+            <option value="">Select City</option>
 
-      <div class="form-group">
+            @for(city of cities; track city){
 
-        <label>Amount</label>
+              <option [value]="city">
+                {{ city }}
+              </option>
 
-        <input
-          type="number"
-          formControlName="amount"
-          placeholder="Enter Claim Amount">
+            }
+
+          </select>
+        </div>
+
+        <!-- Status -->
+        <div class="form-group">
+          <label>Status</label>
+
+          <select formControlName="status">
+
+            @for(status of statuses; track status){
+
+              <option [value]="status">
+                {{ status }}
+              </option>
+
+            }
+
+          </select>
+        </div>
+
+        <!-- Amount -->
+        <div class="form-group">
+          <label>Amount</label>
+          <input
+            type="number"
+            formControlName="amount"
+            placeholder="Enter Claim Amount">
+        </div>
+
+        <!-- Incident Date -->
+        <div class="form-group">
+          <label>Incident Date</label>
+          <input
+            type="date"
+            formControlName="incidentDate">
+        </div>
+
+        <!-- Reported Date -->
+        <div class="form-group full-width">
+          <label>Reported Date</label>
+          <input
+            type="date"
+            formControlName="reportedDate">
+        </div>
 
       </div>
 
@@ -66,8 +130,7 @@
 
         </button>
 
-        <button
-          type="submit">
+        <button type="submit">
 
           {{ isEditMode ? 'Update Claim' : 'Save Claim' }}
 

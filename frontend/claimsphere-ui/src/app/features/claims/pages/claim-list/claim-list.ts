@@ -1,5 +1,10 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {
+  CommonModule,
+  DatePipe,
+  DecimalPipe,
+  NgClass
+} from '@angular/common';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 
 import { ClaimService } from '../../services/claim.service';
@@ -16,7 +21,13 @@ import {
   standalone: true,
   templateUrl: './claim-list.html',
   styleUrl: './claim-list.css',
-  imports: [CommonModule, ReactiveFormsModule]
+  imports: [
+  CommonModule,
+  ReactiveFormsModule,
+  DatePipe,
+  DecimalPipe,
+  NgClass
+]
 })
 export class ClaimListComponent implements OnInit {
 
@@ -140,41 +151,5 @@ export class ClaimListComponent implements OnInit {
       });
 
   }
-
-
-
-  
-
-  searchClaims(event: Event): void {
-
-    const keyword = (event.target as HTMLInputElement).value;
-
-    console.log('Searching:', keyword);
-
-    if (!keyword.trim()) {
-      this.loadClaims();
-      return;
-    }
-
-    this.claimService.searchClaims(keyword).subscribe({
-
-      next: (response) => {
-
-        console.log('Search Response:', response);
-
-        this.claims = response;
-
-      },
-
-      error: (error) => {
-
-        console.error(error);
-
-      }
-
-    });
-
-  }
-
 
 }

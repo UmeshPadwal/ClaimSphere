@@ -3,10 +3,13 @@
   <div class="header">
 
     <div>
+
       <h2>Claim Management</h2>
+
       <p class="subtitle">
         Total Claims: {{ claims.length }}
       </p>
+
     </div>
 
     <button class="create-btn" (click)="goToCreateClaim()">
@@ -37,82 +40,128 @@
 
   <div class="search-container">
 
-    <input type="text" class="search-input" placeholder="🔍 Search by Claim Number, Policy Number or Status"
+    <input type="text" class="search-input" placeholder="🔍 Search by Claim #, Policy #, Customer, Type, City or Status"
       [formControl]="searchControl">
 
   </div>
 
-  <table>
+  <div class="table-container">
+    <table>
 
-    <thead>
+      <thead>
 
-      <tr>
+        <tr>
 
-        <th>ID</th>
-        <th>Claim Number</th>
-        <th>Policy Number</th>
-        <th>Status</th>
-        <th>Amount</th>
-        <th>Actions</th>
+          <th>ID</th>
 
-      </tr>
+          <th>Claim #</th>
 
-    </thead>
+          <th>Customer</th>
 
-    <tbody>
+          <th>Policy #</th>
 
-      @for (claim of claims; track claim.id) {
+          <th>Type</th>
 
-      <tr>
+          <th>City</th>
 
-        <td>#{{ claim.id }}</td>
+          <th>Status</th>
 
-        <td>{{ claim.claimNumber }}</td>
+          <th>Amount</th>
 
-        <td>{{ claim.policyNumber }}</td>
+          <th>Incident Date</th>
 
-        <td>
+          <th>Actions</th>
 
-          <span class="status" [class.open]="claim.status === 'OPEN'" [class.closed]="claim.status === 'CLOSED'"
-            [class.progress]="claim.status === 'IN_PROGRESS'">
+        </tr>
 
-            {{ claim.status }}
+      </thead>
 
-          </span>
+      <tbody>
 
-        </td>
+        @for (claim of claims; track claim.id) {
 
-        <td>₹ {{ claim.amount }}</td>
+        <tr>
 
-        <td class="action-column">
+          <td>#{{ claim.id }}</td>
 
-          <button class="view-btn" (click)="viewClaim(claim.id)">
+          <td>{{ claim.claimNumber }}</td>
 
-            View
+          <td>
 
-          </button>
+            <div class="customer-info">
 
-          <button class="edit-btn" (click)="editClaim(claim.id)">
+              <strong>{{ claim.customerName }}</strong>
 
-            Edit
+            </div>
 
-          </button>
+          </td>
 
-          <button class="delete-btn" (click)="deleteClaim(claim.id)">
+          <td>{{ claim.policyNumber }}</td>
 
-            Delete
+          <td>
 
-          </button>
+            <span class="type-chip">
 
-        </td>
+              {{ claim.claimType }}
 
-      </tr>
+            </span>
 
-      }
+          </td>
 
-    </tbody>
+          <td>{{ claim.city }}</td>
 
-  </table>
+          <td>
+
+            <span class="status" [ngClass]="claim.status.toLowerCase()">
+
+              {{ claim.status }}
+
+            </span>
+
+          </td>
+
+          <td>
+
+            ₹ {{ claim.amount | number }}
+
+          </td>
+
+          <td>
+
+            {{ claim.incidentDate | date:'dd MMM yyyy' }}
+
+          </td>
+
+          <td class="action-column">
+
+            <button class="view-btn" (click)="viewClaim(claim.id)">
+
+              View
+
+            </button>
+
+            <button class="edit-btn" (click)="editClaim(claim.id)">
+
+              Edit
+
+            </button>
+
+            <button class="delete-btn" (click)="deleteClaim(claim.id)">
+
+              Delete
+
+            </button>
+
+          </td>
+
+        </tr>
+
+        }
+
+      </tbody>
+
+    </table>
+  </div>
 
   }
 

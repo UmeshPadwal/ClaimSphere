@@ -1,107 +1,123 @@
-:host {
+.form-grid{
 
-  display: block;
-  min-height: 100vh;
-  background: #f4f7fb;
-  padding: 40px;
+    display:grid;
 
-}
+    grid-template-columns:repeat(2,1fr);
 
-.claim-container {
-
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
+    gap:22px;
 
 }
 
-.claim-card {
+.form-group{
 
-  width: 100%;
-  max-width: 600px;
-  background: white;
-  border-radius: 12px;
-  padding: 30px;
-  box-shadow: 0 10px 25px rgba(0,0,0,.08);
+    display:flex;
+
+    flex-direction:column;
 
 }
 
-h2 {
+.form-group label{
 
-  margin-bottom: 25px;
-  color: #1f2937;
+    margin-bottom:8px;
 
-}
+    font-weight:600;
 
-.form-group {
-
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 20px;
+    color:#374151;
 
 }
 
-label {
+.form-group input,
+.form-group select{
 
-  margin-bottom: 8px;
-  font-weight: 600;
-  color: #374151;
+    padding:12px 14px;
 
-}
+    border:1px solid #d1d5db;
 
-input,
-select {
+    border-radius:10px;
 
-  padding: 12px;
-  border: 1px solid #d1d5db;
-  border-radius: 8px;
-  font-size: 15px;
+    font-size:15px;
+
+    transition:.25s;
 
 }
 
-input:focus,
-select:focus {
+.form-group input:focus,
+.form-group select:focus{
 
-  outline: none;
-  border-color: #2563eb;
-  box-shadow: 0 0 0 3px rgba(37,99,235,.15);
+    outline:none;
 
-}
+    border-color:#2563eb;
 
-.button-group {
-
-  display: flex;
-  justify-content: flex-end;
-  gap: 12px;
-  margin-top: 25px;
+    box-shadow:0 0 0 3px rgba(37,99,235,.15);
 
 }
 
-button {
+.full-width{
 
-  border: none;
-  padding: 12px 22px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 600;
-  color: white;
+    grid-column:1/-1;
 
 }
 
-button[type="submit"] {
+.button-group{
 
-  background: #2563eb;
+    display:flex;
+
+    justify-content:flex-end;
+
+    gap:12px;
+
+    margin-top:30px;
 
 }
 
-.cancel-btn {
+button{
 
-  background: #6b7280;
+    border:none;
+
+    padding:12px 24px;
+
+    border-radius:10px;
+
+    cursor:pointer;
+
+    color:white;
+
+    font-weight:600;
+
+    transition:.3s;
 
 }
 
-button:hover {
+button[type="submit"]{
 
-  opacity: .9;
+    background:#2563eb;
+
+}
+
+.cancel-btn{
+
+    background:#6b7280;
+
+}
+
+button:hover{
+
+    transform:translateY(-2px);
+
+}
+
+@media(max-width:768px){
+
+    .form-grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .full-width{
+
+        grid-column:auto;
+
+    }
 
 }
