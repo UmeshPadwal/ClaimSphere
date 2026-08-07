@@ -8,11 +8,15 @@ import java.util.List;
 
 @Repository
 public interface ClaimRepository extends JpaRepository<Claim, Long> {
-    List<Claim> findByClaimNumberContainingIgnoreCaseOrPolicyNumberContainingIgnoreCaseOrStatusContainingIgnoreCase(
-        String claimNumber,
-        String policyNumber,
-        String status
-);
+    List<Claim> findByClaimNumberContainingIgnoreCaseOrPolicyNumberContainingIgnoreCaseOrCustomerNameContainingIgnoreCaseOrClaimTypeContainingIgnoreCaseOrCityContainingIgnoreCaseOrStatusContainingIgnoreCase(
+
+            String claimNumber,
+            String policyNumber,
+            String customerName,
+            String claimType,
+            String city,
+            String status
+    );
 
 }
 

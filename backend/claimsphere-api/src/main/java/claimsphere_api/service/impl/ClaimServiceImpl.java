@@ -28,18 +28,17 @@ public class ClaimServiceImpl implements ClaimService {
 
         claim.setClaimNumber(request.getClaimNumber());
         claim.setPolicyNumber(request.getPolicyNumber());
+        claim.setCustomerName(request.getCustomerName());
+        claim.setClaimType(request.getClaimType());
+        claim.setCity(request.getCity());
         claim.setStatus(request.getStatus());
         claim.setAmount(request.getAmount());
+        claim.setIncidentDate(request.getIncidentDate());
+        claim.setReportedDate(request.getReportedDate());
 
         Claim savedClaim = claimRepository.save(claim);
 
-        return new ClaimResponse(
-                savedClaim.getId(),
-                savedClaim.getClaimNumber(),
-                savedClaim.getPolicyNumber(),
-                savedClaim.getStatus(),
-                savedClaim.getAmount()
-        );
+        return mapToResponse(savedClaim);
     }
     @Override
     public List<ClaimResponse> getAllClaims() {
@@ -72,8 +71,13 @@ public class ClaimServiceImpl implements ClaimService {
 
         existingClaim.setClaimNumber(request.getClaimNumber());
         existingClaim.setPolicyNumber(request.getPolicyNumber());
+        existingClaim.setCustomerName(request.getCustomerName());
+        existingClaim.setClaimType(request.getClaimType());
+        existingClaim.setCity(request.getCity());
         existingClaim.setStatus(request.getStatus());
         existingClaim.setAmount(request.getAmount());
+        existingClaim.setIncidentDate(request.getIncidentDate());
+        existingClaim.setReportedDate(request.getReportedDate());
 
         Claim updatedClaim = claimRepository.save(existingClaim);
 
@@ -87,8 +91,13 @@ public class ClaimServiceImpl implements ClaimService {
         response.setId(claim.getId());
         response.setClaimNumber(claim.getClaimNumber());
         response.setPolicyNumber(claim.getPolicyNumber());
+        response.setCustomerName(claim.getCustomerName());
+        response.setClaimType(claim.getClaimType());
+        response.setCity(claim.getCity());
         response.setStatus(claim.getStatus());
         response.setAmount(claim.getAmount());
+        response.setIncidentDate(claim.getIncidentDate());
+        response.setReportedDate(claim.getReportedDate());
 
         return response;
     }
@@ -109,7 +118,10 @@ public class ClaimServiceImpl implements ClaimService {
     public List<ClaimResponse> searchClaims(String keyword) {
 
         return claimRepository
-                .findByClaimNumberContainingIgnoreCaseOrPolicyNumberContainingIgnoreCaseOrStatusContainingIgnoreCase(
+                .findByClaimNumberContainingIgnoreCaseOrPolicyNumberContainingIgnoreCaseOrCustomerNameContainingIgnoreCaseOrClaimTypeContainingIgnoreCaseOrCityContainingIgnoreCaseOrStatusContainingIgnoreCase(
+                        keyword,
+                        keyword,
+                        keyword,
                         keyword,
                         keyword,
                         keyword
@@ -117,7 +129,6 @@ public class ClaimServiceImpl implements ClaimService {
                 .stream()
                 .map(this::mapToResponse)
                 .toList();
-
     }
 
     @Override

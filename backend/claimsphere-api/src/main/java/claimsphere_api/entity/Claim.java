@@ -1,7 +1,15 @@
 package claimsphere_api.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+import java.time.LocalDate;
+
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "claims")
 public class Claim {
@@ -10,11 +18,20 @@ public class Claim {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "claim_number", nullable = false, unique = true)
+    @Column(nullable = false, unique = true)
     private String claimNumber;
 
-    @Column(name = "policy_number", nullable = false)
+    @Column(nullable = false)
     private String policyNumber;
+
+    @Column(nullable = false)
+    private String customerName;
+
+    @Column(nullable = false)
+    private String claimType;
+
+    @Column(nullable = false)
+    private String city;
 
     @Column(nullable = false)
     private String status;
@@ -22,46 +39,9 @@ public class Claim {
     @Column(nullable = false)
     private Double amount;
 
-    public Claim() {
-    }
+    @Column(nullable = false)
+    private LocalDate incidentDate;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getClaimNumber() {
-        return claimNumber;
-    }
-
-    public void setClaimNumber(String claimNumber) {
-        this.claimNumber = claimNumber;
-    }
-
-    public String getPolicyNumber() {
-        return policyNumber;
-    }
-
-    public void setPolicyNumber(String policyNumber) {
-        this.policyNumber = policyNumber;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public Double getAmount() {
-        return amount;
-    }
-
-    public void setAmount(Double amount) {
-        this.amount = amount;
-    }
+    @Column(nullable = false)
+    private LocalDate reportedDate;
 }
