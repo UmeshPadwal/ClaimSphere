@@ -2,7 +2,8 @@ package claimsphere_api.service;
 
 import claimsphere_api.dto.ClaimRequest;
 import claimsphere_api.dto.ClaimResponse;
-import claimsphere_api.entity.Claim;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -19,4 +20,7 @@ public interface ClaimService {
 
     void deleteClaim(Long id);
 
+    List<ClaimResponse> searchClaims(String keyword);
+
+    Page<ClaimResponse> getClaims(Pageable pageable);
 }

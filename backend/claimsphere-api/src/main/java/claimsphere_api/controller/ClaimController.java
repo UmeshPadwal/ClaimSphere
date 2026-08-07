@@ -8,7 +8,8 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 @RestController
@@ -51,6 +52,15 @@ public class ClaimController {
 
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<List<ClaimResponse>> searchClaims(
+            @RequestParam String keyword) {
+
+        return ResponseEntity.ok(
+                claimService.searchClaims(keyword));
+
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<ClaimResponse> getClaimById(
             @PathVariable Long id) {
@@ -67,5 +77,12 @@ public class ClaimController {
         claimService.deleteClaim(id);
 
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/page")
+    public Page<ClaimResponse> getClaims(Pageable pageable) {
+
+        return claimService.getClaims(pageable);
+
     }
 }

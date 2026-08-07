@@ -6,6 +6,8 @@ import claimsphere_api.entity.Claim;
 import claimsphere_api.exception.ResourceNotFoundException;
 import claimsphere_api.repository.ClaimRepository;
 import claimsphere_api.service.ClaimService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -100,6 +102,30 @@ public class ClaimServiceImpl implements ClaimService {
                                 "Claim not found with id " + id));
 
         claimRepository.delete(claim);
+
+    }
+
+    @Override
+    public List<ClaimResponse> searchClaims(String keyword) {
+
+        return claimRepository
+                .findByClaimNumberContainingIgnoreCaseOrPolicyNumberContainingIgnoreCaseOrStatusContainingIgnoreCase(
+                        keyword,
+                        keyword,
+                        keyword
+                )
+                .stream()
+                .map(this::mapToResponse)
+                .toList();
+
+    }
+
+    @Override
+    public Page<ClaimResponse> getClaims(Pageable pageable) {
+
+        return claimRepository
+                .findAll(pageable)
+                .map(this::mapToResponse);
 
     }
 }
