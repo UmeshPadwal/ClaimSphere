@@ -1,0 +1,131 @@
+.sidebar {
+
+  width: 260px;
+
+  height: 100vh;
+
+  background: linear-gradient(
+      180deg,
+      #1e3a8a,
+      #2563eb
+  );
+
+  color: white;
+
+  padding: 24px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  box-shadow: 5px 0 20px rgba(0,0,0,.12);
+
+}
+
+.logo {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 14px;
+
+  margin-bottom: 40px;
+
+}
+
+.logo-icon {
+
+  width: 52px;
+
+  height: 52px;
+
+  border-radius: 12px;
+
+  background: rgba(255,255,255,.15);
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  font-size: 24px;
+
+}
+
+.logo h2 {
+
+  margin: 0;
+
+  font-size: 24px;
+
+  font-weight: 700;
+
+}
+
+.logo p {
+
+  margin: 2px 0 0;
+
+  font-size: 13px;
+
+  opacity: .8;
+
+}
+
+nav {
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 8px;
+
+}
+
+nav a {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 14px;
+
+    color: white;
+
+    text-decoration: none;
+
+    padding: 14px 18px;
+
+    border-radius: 12px;
+
+    transition: all .3s ease;
+
+    font-weight: 500;
+
+}
+
+nav a:hover {
+
+  background: rgba(255,255,255,.15);
+
+  transform: translateX(6px);
+
+}
+
+.active {
+
+  background: white;
+
+  color: #2563eb !important;
+
+  font-weight: 700;
+
+}
+
+mat-icon {
+
+    font-size: 22px;
+
+}

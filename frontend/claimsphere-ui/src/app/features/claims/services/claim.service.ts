@@ -60,4 +60,12 @@ export class ClaimService {
 
 }
 
+searchClaims(keyword: string): Observable<ClaimResponse[]> {
+
+  return this.http.get<ClaimResponse[]>(
+    `${this.apiUrl}/search?keyword=${keyword}`
+  );
+
+}
+
 }

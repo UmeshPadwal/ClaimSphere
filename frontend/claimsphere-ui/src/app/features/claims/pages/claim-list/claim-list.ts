@@ -1,16 +1,22 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 
 import { ClaimService } from '../../services/claim.service';
 import { ClaimResponse } from '../../models/claim-response';
 import { Router } from '@angular/router';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  switchMap
+} from 'rxjs';
 
 @Component({
   selector: 'app-claim-list',
   standalone: true,
   templateUrl: './claim-list.html',
   styleUrl: './claim-list.css',
-   imports: [CommonModule]
+  imports: [CommonModule, ReactiveFormsModule]
 })
 export class ClaimListComponent implements OnInit {
 
@@ -19,80 +25,156 @@ export class ClaimListComponent implements OnInit {
 
   claims: ClaimResponse[] = [];
 
+  searchControl = new FormControl('');
+
   ngOnInit(): void {
-     console.log('ClaimListComponent initialized');
+    console.log('ClaimListComponent initialized');
     this.loadClaims();
 
-  }
- private loadClaims(): void {
+  this.searchControl.valueChanges
+  .pipe(
 
-  this.claimService.getAllClaims().subscribe({
+    debounceTime(300),
 
-    next: (response) => {
+    distinctUntilChanged(),
+
+    switchMap(value => {
+
+      if (!value?.trim()) {
+
+        return this.claimService.getAllClaims();
+
+      }
+
+      return this.claimService.searchClaims(value);
+
+    })
+
+  )
+  .subscribe({
+
+    next: response => {
 
       this.claims = response;
 
     },
 
-    error: (error) => {
+    error: error => {
+
       console.error(error);
+
     }
 
   });
 
-}
-
-  goToCreateClaim(): void {
-
-  this.router.navigate(['/claims/create']);
-
-}
-
-viewClaim(id: number): void {
-
-  this.router.navigate(['/claims/view', id]);
-
-}
-
-editClaim(id: number): void {
-
-  this.router.navigate(['/claims/edit', id]);
-
-}
-
-deleteClaim(id: number): void {
-
-  const confirmed = confirm(
-    'Are you sure you want to delete this claim?'
-  );
-
-  if (!confirmed) {
-
-    return;
-
   }
 
-  this.claimService
-    .deleteClaim(id)
-    .subscribe({
+  private loadClaims(): void {
 
-      next: () => {
+    this.claimService.getAllClaims().subscribe({
 
-        alert('Claim deleted successfully!');
+      next: (response) => {
 
-        this.loadClaims();
+        this.claims = response;
 
       },
 
-      error: error => {
+      error: (error) => {
+        console.error(error);
+      }
+
+    });
+
+  }
+
+  goToCreateClaim(): void {
+
+    this.router.navigate(['/claims/create']);
+
+  }
+
+  viewClaim(id: number): void {
+
+    this.router.navigate(['/claims/view', id]);
+
+  }
+
+  editClaim(id: number): void {
+
+    this.router.navigate(['/claims/edit', id]);
+
+  }
+
+  deleteClaim(id: number): void {
+
+    const confirmed = confirm(
+      'Are you sure you want to delete this claim?'
+    );
+
+    if (!confirmed) {
+
+      return;
+
+    }
+
+    this.claimService
+      .deleteClaim(id)
+      .subscribe({
+
+        next: () => {
+
+          alert('Claim deleted successfully!');
+
+          this.loadClaims();
+
+        },
+
+        error: error => {
+
+          console.error(error);
+
+          alert('Unable to delete claim.');
+
+        }
+
+      });
+
+  }
+
+
+
+  
+
+  searchClaims(event: Event): void {
+
+    const keyword = (event.target as HTMLInputElement).value;
+
+    console.log('Searching:', keyword);
+
+    if (!keyword.trim()) {
+      this.loadClaims();
+      return;
+    }
+
+    this.claimService.searchClaims(keyword).subscribe({
+
+      next: (response) => {
+
+        console.log('Search Response:', response);
+
+        this.claims = response;
+
+      },
+
+      error: (error) => {
 
         console.error(error);
-
-        alert('Unable to delete claim.');
 
       }
 
     });
 
-}
+  }
+
+
 }

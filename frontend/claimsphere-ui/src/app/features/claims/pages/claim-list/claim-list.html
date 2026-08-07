@@ -9,9 +9,7 @@
       </p>
     </div>
 
-    <button
-      class="create-btn"
-      (click)="goToCreateClaim()">
+    <button class="create-btn" (click)="goToCreateClaim()">
 
       + Create Claim
 
@@ -21,104 +19,100 @@
 
   @if (claims.length === 0) {
 
-    <div class="empty-state">
+  <div class="empty-state">
 
-      <h3>No Claims Found</h3>
+    <h3>No Claims Found</h3>
 
-      <p>Create your first insurance claim.</p>
+    <p>Create your first insurance claim.</p>
 
-      <button
-        class="create-btn"
-        (click)="goToCreateClaim()">
+    <button class="create-btn" (click)="goToCreateClaim()">
 
-        Create Claim
+      Create Claim
 
-      </button>
+    </button>
 
-    </div>
+  </div>
 
   } @else {
 
-    <table>
+  <div class="search-container">
 
-      <thead>
+    <input type="text" class="search-input" placeholder="🔍 Search by Claim Number, Policy Number or Status"
+      [formControl]="searchControl">
 
-        <tr>
+  </div>
 
-          <th>ID</th>
-          <th>Claim Number</th>
-          <th>Policy Number</th>
-          <th>Status</th>
-          <th>Amount</th>
-          <th>Actions</th>
+  <table>
 
-        </tr>
+    <thead>
 
-      </thead>
+      <tr>
 
-      <tbody>
+        <th>ID</th>
+        <th>Claim Number</th>
+        <th>Policy Number</th>
+        <th>Status</th>
+        <th>Amount</th>
+        <th>Actions</th>
 
-        @for (claim of claims; track claim.id) {
+      </tr>
 
-          <tr>
+    </thead>
 
-            <td>#{{ claim.id }}</td>
+    <tbody>
 
-            <td>{{ claim.claimNumber }}</td>
+      @for (claim of claims; track claim.id) {
 
-            <td>{{ claim.policyNumber }}</td>
+      <tr>
 
-            <td>
+        <td>#{{ claim.id }}</td>
 
-              <span
-                class="status"
-                [class.open]="claim.status === 'OPEN'"
-                [class.closed]="claim.status === 'CLOSED'"
-                [class.progress]="claim.status === 'IN_PROGRESS'">
+        <td>{{ claim.claimNumber }}</td>
 
-                {{ claim.status }}
+        <td>{{ claim.policyNumber }}</td>
 
-              </span>
+        <td>
 
-            </td>
+          <span class="status" [class.open]="claim.status === 'OPEN'" [class.closed]="claim.status === 'CLOSED'"
+            [class.progress]="claim.status === 'IN_PROGRESS'">
 
-            <td>₹ {{ claim.amount }}</td>
+            {{ claim.status }}
 
-            <td class="action-column">
+          </span>
 
-              <button
-                class="view-btn"
-                (click)="viewClaim(claim.id)">
+        </td>
 
-                View
+        <td>₹ {{ claim.amount }}</td>
 
-              </button>
+        <td class="action-column">
 
-              <button
-                class="edit-btn"
-                (click)="editClaim(claim.id)">
+          <button class="view-btn" (click)="viewClaim(claim.id)">
 
-                Edit
+            View
 
-              </button>
+          </button>
 
-              <button
-                class="delete-btn"
-                (click)="deleteClaim(claim.id)">
+          <button class="edit-btn" (click)="editClaim(claim.id)">
 
-                Delete
+            Edit
 
-              </button>
+          </button>
 
-            </td>
+          <button class="delete-btn" (click)="deleteClaim(claim.id)">
 
-          </tr>
+            Delete
 
-        }
+          </button>
 
-      </tbody>
+        </td>
 
-    </table>
+      </tr>
+
+      }
+
+    </tbody>
+
+  </table>
 
   }
 

@@ -1,0 +1,56 @@
+<div class="sidebar">
+
+  <div class="logo">
+
+    <div class="logo-icon">
+
+      <mat-icon>shield</mat-icon>
+
+    </div>
+
+    <div>
+
+      <h2>ClaimSphere</h2>
+
+      <p>Insurance Portal</p>
+
+    </div>
+
+  </div>
+
+  <nav>
+
+    <a
+      routerLink="/dashboard"
+      routerLinkActive="active">
+
+      <mat-icon>dashboard</mat-icon>
+
+      Dashboard
+
+    </a>
+
+    <a
+      routerLink="/claims"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }">
+
+      <mat-icon>description</mat-icon>
+
+      Claims
+
+    </a>
+
+    <a
+      routerLink="/claims/create"
+      routerLinkActive="active">
+
+      <mat-icon>add_circle</mat-icon>
+
+      Create Claim
+
+    </a>
+
+  </nav>
+
+</div>

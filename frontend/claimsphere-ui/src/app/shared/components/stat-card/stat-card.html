@@ -1,0 +1,21 @@
+<div class="stat-card">
+
+  <div class="card-header">
+
+    <div class="icon-box" [style.background]="color()">
+      <mat-icon>{{ icon() }}</mat-icon>
+    </div>
+
+    <span class="trend">
+      {{ trend() }}
+    </span>
+
+  </div>
+
+  <p class="title">{{ title() }}</p>
+
+  <h2>{{ value() }}</h2>
+
+  <small>{{ subtitle() }}</small>
+
+</div>
