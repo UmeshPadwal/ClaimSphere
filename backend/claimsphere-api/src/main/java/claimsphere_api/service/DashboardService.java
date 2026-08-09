@@ -1,4 +1,10 @@
 package claimsphere_api.service;
 
-public class DashboardService {
+
+import claimsphere_api.dto.DashboardSummaryResponse;
+
+public interface DashboardService {
+
+    DashboardSummaryResponse getDashboardSummary();
+
 }
