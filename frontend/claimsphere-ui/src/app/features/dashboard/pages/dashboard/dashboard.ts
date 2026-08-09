@@ -6,54 +6,75 @@ import { ClaimResponse } from '../../../claims/models/claim-response';
 import { QuickActionsComponent } from '../../../../shared/components/quick-actions/quick-actions';
 import { RecentClaimsComponent } from '../../../../shared/components/recent-claims/recent-claims';
 
+import { DashboardStats } from '../../models/dashboard-stats';
+import { DashboardService } from '../../services/dashboard';
+
 @Component({
   selector: 'app-dashboard',
   standalone: true,
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
-  imports: [StatCardComponent,QuickActionsComponent,RecentClaimsComponent]
+  imports: [StatCardComponent, QuickActionsComponent, RecentClaimsComponent]
 })
 export class DashboardComponent {
 
   private router = inject(Router);
   private claimService = inject(ClaimService);
+  private dashboardService = inject(DashboardService);
+
+  stats?: DashboardStats;
+  claims: ClaimResponse[] = [];
+
+  ngOnInit(): void {
+
+    this.loadDashboardSummary();
+
+    this.loadRecentClaims();
+
+  }
 
   createClaim(): void {
     this.router.navigate(['/claims/create']);
   }
 
-  claims: ClaimResponse[] = [];
+  private loadDashboardSummary(): void {
 
-  totalClaims = 0;
-  openClaims = 0;
-  closedClaims = 0;
-  pendingClaims = 0;
+    this.dashboardService.getSummary().subscribe({
 
-  ngOnInit(): void {
+      next: response => {
 
-  this.claimService.getAllClaims().subscribe({
+        this.stats = response;
 
-    next: claims => {
+      },
 
-      this.claims = claims;
+      error: error => {
 
-      this.calculateStatistics();
+        console.error(error);
 
-    }
+      }
 
-  });
+    });
 
-}
-  private calculateStatistics(): void {
+  }
 
-  this.totalClaims = this.claims.length;
+  private loadRecentClaims(): void {
 
-  this.openClaims = this.claims.filter(c => c.status === 'OPEN').length;
+    this.claimService.getAllClaims().subscribe({
 
-  this.closedClaims = this.claims.filter(c => c.status === 'CLOSED').length;
+      next: claims => {
 
-  this.pendingClaims = this.claims.filter(c => c.status === 'PENDING').length;
+        this.claims = claims.slice(0, 5);
 
-}
+      },
+
+      error: error => {
+
+        console.error(error);
+
+      }
+
+    });
+
+  }
 
 }

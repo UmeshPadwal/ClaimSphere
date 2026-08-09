@@ -1,15 +1,25 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
 .stat-card {
-  background: white;
-  border-radius: 20px;
+  background: #fff;
+  border-radius: 18px;
   padding: 24px;
-  box-shadow: 0 12px 30px rgba(0,0,0,.08);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, .08);
   transition: all .3s ease;
   cursor: pointer;
+  min-height: 170px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .stat-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 20px 40px rgba(0,0,0,.15);
+  transform: translateY(-6px);
+  box-shadow: 0 18px 35px rgba(0,0,0,.12);
 }
 
 .card-header {
@@ -21,10 +31,12 @@
 .icon-box {
   width: 56px;
   height: 56px;
-  border-radius: 16px;
+  border-radius: 14px;
+
   display: flex;
   justify-content: center;
   align-items: center;
+
   color: white;
 }
 
@@ -34,23 +46,31 @@
   height: 28px;
 }
 
+.card-body {
+  display: flex;
+  flex-direction: column;
+}
+
 .title {
-  margin: 18px 0 8px;
   color: #64748b;
   font-size: 15px;
+  font-weight: 500;
 }
 
-h2 {
-  margin: 0;
-  font-size: 36px;
+.value {
+  font-size: 42px;
   font-weight: 700;
+  color: #0f172a;
+  margin: 8px 0;
 }
 
-small {
+.subtitle {
   color: #94a3b8;
+  font-size: 13px;
 }
 
 .trend {
   color: #22c55e;
-  font-weight: 600;
+  font-weight: 700;
+  font-size: 14px;
 }

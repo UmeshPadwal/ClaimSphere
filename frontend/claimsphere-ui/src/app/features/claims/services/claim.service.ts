@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 
 import { ClaimRequest } from '../models/claim-request';
 import { ClaimResponse } from '../models/claim-response';
+import { PageResponse } from '../../../shared/models/page-response';
 
 @Injectable({
   providedIn: 'root'
@@ -31,6 +32,17 @@ export class ClaimService {
     return this.http.get<ClaimResponse[]>(this.apiUrl);
 
   }
+
+  getClaimsPage(
+  page: number,
+  size: number
+) {
+
+  return this.http.get<PageResponse<ClaimResponse>>(
+    `${this.apiUrl}/page?page=${page}&size=${size}`
+  );
+
+}
 
   getClaimById(id: number): Observable<ClaimResponse> {
 

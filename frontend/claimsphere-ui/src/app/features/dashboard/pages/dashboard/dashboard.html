@@ -7,14 +7,14 @@
       <h1>Welcome Back 👋</h1>
 
       <p>
-
         Manage all your insurance claims from one place.
-
       </p>
 
     </div>
 
-    <button class="create-btn" (click)="createClaim()">
+    <button
+      class="create-btn"
+      (click)="createClaim()">
 
       + Create Claim
 
@@ -24,25 +24,49 @@
 
   <div class="stats">
 
-    <app-stat-card title="Total Claims" [value]="totalClaims" icon="description" color="#2563eb" trend="+8%">
+    <app-stat-card
+      title="Total Claims"
+      [value]="stats?.totalClaims ?? 0"
+      icon="description"
+      color="#2563eb"
+      trend="+8%">
     </app-stat-card>
 
-    <app-stat-card title="Open Claims" [value]="openClaims" icon="check_circle" color="#22c55e" trend="+15%">
+    <app-stat-card
+      title="Open Claims"
+      [value]="stats?.openClaims ?? 0"
+      icon="check_circle"
+      color="#22c55e"
+      trend="+15%">
     </app-stat-card>
 
-    <app-stat-card title="Closed Claims" [value]="closedClaims" icon="task_alt" color="#ef4444" trend="+6%">
+    <app-stat-card
+      title="Closed Claims"
+      [value]="stats?.closedClaims ?? 0"
+      icon="task_alt"
+      color="#ef4444"
+      trend="+6%">
     </app-stat-card>
 
-    <app-stat-card title="Pending Claims" [value]="pendingClaims" icon="schedule" color="#f59e0b" trend="-3%">
+    <app-stat-card
+      title="Pending Claims"
+      [value]="stats?.pendingClaims ?? 0"
+      icon="schedule"
+      color="#f59e0b"
+      trend="-3%">
     </app-stat-card>
 
   </div>
+
   <div class="dashboard-content">
 
-    <app-recent-claims [claims]="claims"></app-recent-claims>
+    <app-recent-claims
+      [claims]="claims">
+    </app-recent-claims>
 
-    <app-quick-actions></app-quick-actions>
+    <app-quick-actions>
+    </app-quick-actions>
 
-</div>
+  </div>
 
 </div>

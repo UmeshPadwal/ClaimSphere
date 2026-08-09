@@ -1,129 +1,187 @@
-.dashboard {
-
-    display: flex;
-
-    flex-direction: column;
-
-    gap: 32px;
-
+:host {
+  display: block;
+  min-height: 100%;
+  padding: 24px;
+  background: #f4f7fb;
 }
 
+/* ===========================================
+   Dashboard Layout
+=========================================== */
+
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+/* ===========================================
+   Hero Section
+=========================================== */
+
 .hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 
-    background: linear-gradient(135deg,#2563eb,#4f46e5);
+  padding: 32px 40px;
 
-    color: white;
+  border-radius: 22px;
 
-    border-radius: 20px;
+  background: linear-gradient(135deg, #2563eb, #4f46e5);
 
-    padding: 40px;
+  color: #fff;
 
-    display: flex;
-
-    justify-content: space-between;
-
-    align-items: center;
-
+  box-shadow: 0 12px 30px rgba(37, 99, 235, .18);
 }
 
 .hero h1 {
-
-    margin: 0;
-
-    font-size: 36px;
-
+  margin: 0;
+  font-size: 48px;
+  font-weight: 700;
 }
 
 .hero p {
-
-    margin-top: 10px;
-
-    opacity: .9;
-
+  margin-top: 8px;
+  font-size: 16px;
+  opacity: .9;
 }
 
 .create-btn {
 
-    background: white;
+  border: none;
 
-    color: #2563eb;
+  background: white;
 
-    border: none;
+  color: #2563eb;
 
-    padding: 14px 26px;
+  padding: 14px 28px;
 
-    border-radius: 10px;
+  border-radius: 12px;
 
-    font-weight: 600;
+  font-size: 15px;
 
-    cursor: pointer;
+  font-weight: 600;
 
-    transition: .3s;
+  cursor: pointer;
+
+  transition: all .25s ease;
+
+  box-shadow: 0 10px 22px rgba(0,0,0,.15);
 
 }
 
 .create-btn:hover {
 
-    transform: translateY(-3px);
+  transform: translateY(-3px);
 
 }
+
+/* ===========================================
+   Statistics Cards
+=========================================== */
 
 .stats {
 
-    display: grid;
+  display: grid;
 
-    grid-template-columns: repeat(4,1fr);
+  grid-template-columns: repeat(4, minmax(0,1fr));
 
-    gap: 24px;
-
-}
-
-.card {
-
-    background: white;
-
-    border-radius: 18px;
-
-    padding: 30px;
-
-    box-shadow: 0 10px 25px rgba(0,0,0,.08);
-
-    transition: .3s;
+  gap: 24px;
 
 }
 
-.card:hover {
+/* ===========================================
+   Dashboard Content
+=========================================== */
 
-    transform: translateY(-6px);
+.dashboard-content {
 
-}
+  display: grid;
 
-.success {
+  grid-template-columns: 2fr 1fr;
 
-    border-left: 6px solid #22c55e;
+  gap: 28px;
 
-}
-
-.danger {
-
-    border-left: 6px solid #ef4444;
+  align-items: start;
 
 }
 
-.warning {
+/* ===========================================
+   Card Styling
+=========================================== */
 
-    border-left: 6px solid #f59e0b;
+.dashboard-content app-recent-claims,
+.dashboard-content app-quick-actions {
+
+  display: block;
+
+  width: 100%;
 
 }
 
-.dashboard-content{
+/* ===========================================
+   Responsive
+=========================================== */
 
-    display:grid;
+@media (max-width: 1400px) {
 
-    grid-template-columns:2fr 1fr;
+  .stats {
 
-    gap:28px;
+    grid-template-columns: repeat(2, 1fr);
 
-    margin-top:30px;
+  }
+
+}
+
+@media (max-width: 1100px) {
+
+  .dashboard-content {
+
+    grid-template-columns: 1fr;
+
+  }
+
+}
+
+@media (max-width: 768px) {
+
+  :host {
+
+    padding: 16px;
+
+  }
+
+  .hero {
+
+    flex-direction: column;
+
+    align-items: flex-start;
+
+    gap: 20px;
+
+    padding: 28px;
+
+  }
+
+  .hero h1 {
+
+    font-size: 34px;
+
+  }
+
+  .create-btn {
+
+    width: 100%;
+
+    text-align: center;
+
+  }
+
+  .stats {
+
+    grid-template-columns: 1fr;
+
+  }
 
 }

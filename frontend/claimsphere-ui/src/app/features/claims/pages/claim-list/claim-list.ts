@@ -22,12 +22,12 @@ import {
   templateUrl: './claim-list.html',
   styleUrl: './claim-list.css',
   imports: [
-  CommonModule,
-  ReactiveFormsModule,
-  DatePipe,
-  DecimalPipe,
-  NgClass
-]
+    CommonModule,
+    ReactiveFormsModule,
+    DatePipe,
+    DecimalPipe,
+    NgClass
+  ]
 })
 export class ClaimListComponent implements OnInit {
 
@@ -35,6 +35,15 @@ export class ClaimListComponent implements OnInit {
   private router = inject(Router);
 
   claims: ClaimResponse[] = [];
+  isSearching = false;
+
+  page = 0;
+
+  size = 10;
+
+  totalElements = 0;
+
+  totalPages = 0;
 
   searchControl = new FormControl('');
 
@@ -42,59 +51,95 @@ export class ClaimListComponent implements OnInit {
     console.log('ClaimListComponent initialized');
     this.loadClaims();
 
-  this.searchControl.valueChanges
-  .pipe(
+    this.searchControl.valueChanges
+      .pipe(
 
-    debounceTime(300),
+        debounceTime(300),
 
-    distinctUntilChanged(),
+        distinctUntilChanged(),
 
-    switchMap(value => {
+        switchMap(value => {
 
-      if (!value?.trim()) {
+          this.isSearching = !!value?.trim();
 
-        return this.claimService.getAllClaims();
+          if (!value?.trim()) {
 
-      }
+            this.loadClaims();
 
-      return this.claimService.searchClaims(value);
+            return [];
 
-    })
+          }
 
-  )
-  .subscribe({
+          return this.claimService.searchClaims(value);
 
-    next: response => {
+        })
 
-      this.claims = response;
+      )
+      .subscribe({
 
-    },
+        next: response => {
 
-    error: error => {
+          this.claims = response;
 
-      console.error(error);
+        },
 
-    }
+        error: error => {
 
-  });
+          console.error(error);
+
+        }
+
+      });
 
   }
 
   private loadClaims(): void {
 
-    this.claimService.getAllClaims().subscribe({
+    this.claimService
+      .getClaimsPage(this.page, this.size)
+      .subscribe({
 
-      next: (response) => {
+        next: response => {
 
-        this.claims = response;
+          this.claims = response.content;
 
-      },
+          this.totalElements = response.totalElements;
 
-      error: (error) => {
-        console.error(error);
-      }
+          this.totalPages = response.totalPages;
 
-    });
+        },
+
+        error: error => {
+
+          console.error(error);
+
+        }
+
+      });
+
+  }
+
+  nextPage(): void {
+
+    if (this.page < this.totalPages - 1) {
+
+      this.page++;
+
+      this.loadClaims();
+
+    }
+
+  }
+
+  previousPage(): void {
+
+    if (this.page > 0) {
+
+      this.page--;
+
+      this.loadClaims();
+
+    }
 
   }
 

@@ -7,12 +7,14 @@
       <h2>Claim Management</h2>
 
       <p class="subtitle">
-        Total Claims: {{ claims.length }}
+        Total Claims: {{ totalElements }}
       </p>
 
     </div>
 
-    <button class="create-btn" (click)="goToCreateClaim()">
+    <button
+      class="create-btn"
+      (click)="goToCreateClaim()">
 
       + Create Claim
 
@@ -20,15 +22,35 @@
 
   </div>
 
-  @if (claims.length === 0) {
+  <!-- Search -->
+
+  <div class="search-container">
+
+    <input
+      type="text"
+      class="search-input"
+      placeholder="🔍 Search by Claim #, Policy #, Customer, Type, City or Status"
+      [formControl]="searchControl">
+
+  </div>
+
+  <!-- Database Empty -->
+
+  @if (claims.length === 0 && !isSearching) {
 
   <div class="empty-state">
 
     <h3>No Claims Found</h3>
 
-    <p>Create your first insurance claim.</p>
+    <p>
 
-    <button class="create-btn" (click)="goToCreateClaim()">
+      Create your first insurance claim.
+
+    </p>
+
+    <button
+      class="create-btn"
+      (click)="goToCreateClaim()">
 
       Create Claim
 
@@ -36,131 +58,166 @@
 
   </div>
 
-  } @else {
+  }
 
-  <div class="search-container">
+  <!-- Search Empty -->
 
-    <input type="text" class="search-input" placeholder="🔍 Search by Claim #, Policy #, Customer, Type, City or Status"
-      [formControl]="searchControl">
+  @if (claims.length === 0 && isSearching) {
+
+  <div class="empty-state">
+
+    <h3>No matching claims found</h3>
+
+    <p>
+
+      Try another claim number, customer name, policy number, city or status.
+
+    </p>
 
   </div>
 
-  <div class="table-container">
-    <table>
+  }
 
-      <thead>
+  <!-- Claims Table -->
 
-        <tr>
+  @if (claims.length > 0) {
 
-          <th>ID</th>
+  <table>
 
-          <th>Claim #</th>
+    <thead>
 
-          <th>Customer</th>
+      <tr>
 
-          <th>Policy #</th>
+        <th>Claim Details</th>
 
-          <th>Type</th>
+        <th>Customer</th>
 
-          <th>City</th>
+        <th>Status</th>
 
-          <th>Status</th>
+        <th>Amount</th>
 
-          <th>Amount</th>
+        <th>Incident Date</th>
 
-          <th>Incident Date</th>
+        <th>Actions</th>
 
-          <th>Actions</th>
+      </tr>
 
-        </tr>
+    </thead>
 
-      </thead>
+    <tbody>
 
-      <tbody>
+      @for (claim of claims; track claim.id) {
 
-        @for (claim of claims; track claim.id) {
+      <tr>
 
-        <tr>
+        <td>
 
-          <td>#{{ claim.id }}</td>
+          <div class="claim-details">
 
-          <td>{{ claim.claimNumber }}</td>
+            <strong>{{ claim.claimNumber }}</strong>
 
-          <td>
-
-            <div class="customer-info">
-
-              <strong>{{ claim.customerName }}</strong>
-
-            </div>
-
-          </td>
-
-          <td>{{ claim.policyNumber }}</td>
-
-          <td>
+            <small>{{ claim.policyNumber }}</small>
 
             <span class="type-chip">
 
-              {{ claim.claimType }}
+              {{ claim.claimType }} • {{ claim.city }}
 
             </span>
 
-          </td>
+          </div>
 
-          <td>{{ claim.city }}</td>
+        </td>
 
-          <td>
+        <td>
 
-            <span class="status" [ngClass]="claim.status.toLowerCase()">
+          <strong>{{ claim.customerName }}</strong>
 
-              {{ claim.status }}
+        </td>
 
-            </span>
+        <td>
 
-          </td>
+          <span
+            class="status"
+            [ngClass]="claim.status.toLowerCase()">
 
-          <td>
+            {{ claim.status }}
 
-            ₹ {{ claim.amount | number }}
+          </span>
 
-          </td>
+        </td>
 
-          <td>
+        <td>
 
-            {{ claim.incidentDate | date:'dd MMM yyyy' }}
+          ₹ {{ claim.amount | number }}
 
-          </td>
+        </td>
 
-          <td class="action-column">
+        <td>
 
-            <button class="view-btn" (click)="viewClaim(claim.id)">
+          {{ claim.incidentDate | date:'dd MMM yyyy' }}
 
-              View
+        </td>
 
-            </button>
+        <td class="action-column">
 
-            <button class="edit-btn" (click)="editClaim(claim.id)">
+          <button
+            class="view-btn"
+            (click)="viewClaim(claim.id)">
 
-              Edit
+            View
 
-            </button>
+          </button>
 
-            <button class="delete-btn" (click)="deleteClaim(claim.id)">
+          <button
+            class="edit-btn"
+            (click)="editClaim(claim.id)">
 
-              Delete
+            Edit
 
-            </button>
+          </button>
 
-          </td>
+          <button
+            class="delete-btn"
+            (click)="deleteClaim(claim.id)">
 
-        </tr>
+            Delete
 
-        }
+          </button>
 
-      </tbody>
+        </td>
 
-    </table>
+      </tr>
+
+      }
+
+    </tbody>
+
+  </table>
+
+  <div class="pagination">
+
+    <button
+      (click)="previousPage()"
+      [disabled]="page === 0">
+
+      Previous
+
+    </button>
+
+    <span>
+
+      Page {{ page + 1 }} of {{ totalPages }}
+
+    </span>
+
+    <button
+      (click)="nextPage()"
+      [disabled]="page === totalPages - 1">
+
+      Next
+
+    </button>
+
   </div>
 
   }

@@ -8,4 +8,8 @@ export interface DashboardStats {
 
   pendingClaims: number;
 
+  inProgressClaims: number;
+
+  totalClaimAmount: number;
+
 }
