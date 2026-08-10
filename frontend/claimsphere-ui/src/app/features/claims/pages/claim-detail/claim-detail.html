@@ -1,64 +1,360 @@
-<div class="container">
+<div class="claim-view-page">
 
-  <h2>Claim Details</h2>
+  <!-- Loading -->
+  @if (isLoading) {
 
-  @if(claim){
+    <div class="state-card">
 
-  <div class="detail-card">
+      <div class="loader"></div>
 
-    <div class="row">
+      <h3>Loading Claim Details...</h3>
 
-      <span>Claim Number</span>
-
-      <strong>{{claim.claimNumber}}</strong>
-
-    </div>
-
-    <div class="row">
-
-      <span>Policy Number</span>
-
-      <strong>{{claim.policyNumber}}</strong>
+      <p>Please wait while we fetch the claim information.</p>
 
     </div>
 
-    <div class="row">
+  }
 
-      <span>Status</span>
+  <!-- Error -->
+  @else if (errorMessage) {
 
-      <strong>{{claim.status}}</strong>
+    <div class="state-card error-state">
+
+      <div class="error-icon">
+        !
+      </div>
+
+      <h3>Unable to Load Claim</h3>
+
+      <p>{{ errorMessage }}</p>
+
+      <div class="state-actions">
+
+        <button
+          class="secondary-btn"
+          type="button"
+          (click)="goBack()">
+
+          ← Back to Claims
+
+        </button>
+
+        <button
+          class="primary-btn"
+          type="button"
+          (click)="retry()">
+
+          Try Again
+
+        </button>
+
+      </div>
 
     </div>
 
-    <div class="row">
+  }
 
-      <span>Amount</span>
+  <!-- Claim Details -->
+  @else if (claim) {
 
-      <strong>₹ {{claim.amount}}</strong>
+    <!-- Page Header -->
+    <div class="page-header">
 
-    </div>
+      <div class="header-left">
 
-    <div class="buttons">
+        <button
+          class="back-btn"
+          type="button"
+          (click)="goBack()">
 
-      <button
-        class="back-btn"
-        (click)="goBack()">
+          ← Back to Claims
 
-        Back
+        </button>
 
-      </button>
+        <div>
+
+          <div class="title-row">
+
+            <h1>Claim Details</h1>
+
+            <span
+              class="status"
+              [class]="getStatusClass(claim.status)">
+
+              {{ claim.status }}
+
+            </span>
+
+          </div>
+
+          <p class="claim-reference">
+
+            {{ claim.claimNumber }}
+
+            <span>•</span>
+
+            {{ claim.claimType }}
+
+          </p>
+
+        </div>
+
+      </div>
 
       <button
         class="edit-btn"
+        type="button"
         (click)="editClaim()">
 
-        Edit
+        ✎ Edit Claim
 
       </button>
 
     </div>
 
-  </div>
+
+    <!-- Main Card -->
+    <div class="details-card">
+
+
+      <!-- Claim Information -->
+      <section class="details-section">
+
+        <div class="section-heading">
+
+          <div class="section-icon blue">
+            #
+          </div>
+
+          <div>
+
+            <h2>Claim Information</h2>
+
+            <p>Basic information about this insurance claim.</p>
+
+          </div>
+
+        </div>
+
+
+        <div class="details-grid">
+
+          <div class="detail-item">
+
+            <span class="label">
+              Claim Number
+            </span>
+
+            <strong>
+              {{ claim.claimNumber }}
+            </strong>
+
+          </div>
+
+
+          <div class="detail-item">
+
+            <span class="label">
+              Policy Number
+            </span>
+
+            <strong>
+              {{ claim.policyNumber }}
+            </strong>
+
+          </div>
+
+
+          <div class="detail-item">
+
+            <span class="label">
+              Claim Type
+            </span>
+
+            <span class="type-chip">
+              {{ claim.claimType }}
+            </span>
+
+          </div>
+
+
+          <div class="detail-item">
+
+            <span class="label">
+              Claim Status
+            </span>
+
+            <span
+              class="status"
+              [class]="getStatusClass(claim.status)">
+
+              {{ claim.status }}
+
+            </span>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- Customer Information -->
+      <section class="details-section">
+
+        <div class="section-heading">
+
+          <div class="section-icon purple">
+            👤
+          </div>
+
+          <div>
+
+            <h2>Customer Information</h2>
+
+            <p>Customer details associated with this claim.</p>
+
+          </div>
+
+        </div>
+
+
+        <div class="details-grid">
+
+          <div class="detail-item">
+
+            <span class="label">
+              Customer Name
+            </span>
+
+            <strong>
+              {{ claim.customerName }}
+            </strong>
+
+          </div>
+
+
+          <div class="detail-item">
+
+            <span class="label">
+              City
+            </span>
+
+            <strong>
+              {{ claim.city }}
+            </strong>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- Incident Information -->
+      <section class="details-section">
+
+        <div class="section-heading">
+
+          <div class="section-icon orange">
+            📅
+          </div>
+
+          <div>
+
+            <h2>Incident Information</h2>
+
+            <p>Incident and reporting dates.</p>
+
+          </div>
+
+        </div>
+
+
+        <div class="details-grid">
+
+          <div class="detail-item">
+
+            <span class="label">
+              Incident Date
+            </span>
+
+            <strong>
+
+              {{ claim.incidentDate | date:'dd MMM yyyy' }}
+
+            </strong>
+
+          </div>
+
+
+          <div class="detail-item">
+
+            <span class="label">
+              Reported Date
+            </span>
+
+            <strong>
+
+              {{ claim.reportedDate | date:'dd MMM yyyy' }}
+
+            </strong>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- Amount -->
+      <section class="amount-section">
+
+        <div>
+
+          <span class="amount-label">
+            Total Claim Amount
+          </span>
+
+          <p>
+            Amount requested for this insurance claim
+          </p>
+
+        </div>
+
+        <strong class="amount">
+
+          ₹ {{ claim.amount | number:'1.0-0' }}
+
+        </strong>
+
+      </section>
+
+
+      <!-- Footer Actions -->
+      <div class="card-actions">
+
+        <button
+          class="secondary-btn"
+          type="button"
+          (click)="goBack()">
+
+          ← Back to Claims
+
+        </button>
+
+        <button
+          class="primary-btn"
+          type="button"
+          (click)="editClaim()">
+
+          ✎ Edit Claim
+
+        </button>
+
+      </div>
+
+    </div>
 
   }
 

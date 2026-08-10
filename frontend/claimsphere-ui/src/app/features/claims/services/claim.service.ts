@@ -15,8 +15,7 @@ export class ClaimService {
 
   private http = inject(HttpClient);
 
-  private readonly apiUrl =
-    `${environment.apiUrl}/claims`;
+  private readonly apiUrl = `${environment.apiUrl}/claims`;
 
   createClaim(request: ClaimRequest): Observable<ClaimResponse> {
 
@@ -34,15 +33,56 @@ export class ClaimService {
   }
 
   getClaimsPage(
-  page: number,
-  size: number
-) {
 
-  return this.http.get<PageResponse<ClaimResponse>>(
-    `${this.apiUrl}/page?page=${page}&size=${size}`
-  );
+    page: number,
 
-}
+    size: number,
+
+    keyword: string = '',
+
+    status: string = '',
+
+    city: string = '',
+
+    claimType: string = '',
+
+    sortBy: string = 'id',
+
+    direction: string = 'asc'
+
+  ): Observable<PageResponse<ClaimResponse>> {
+
+    return this.http.get<PageResponse<ClaimResponse>>(
+
+      `${this.apiUrl}/page`,
+
+      {
+
+        params: {
+
+          page,
+
+          size,
+
+          keyword,
+
+          status,
+
+          city,
+
+          claimType,
+
+          sortBy,
+
+          direction
+
+        }
+
+      }
+
+    );
+
+  }
 
   getClaimById(id: number): Observable<ClaimResponse> {
 
@@ -66,18 +106,11 @@ export class ClaimService {
 
   deleteClaim(id: number): Observable<void> {
 
-  return this.http.delete<void>(
-    `${this.apiUrl}/${id}`
-  );
+    return this.http.delete<void>(
+      `${this.apiUrl}/${id}`
+    );
 
-}
+  }
 
-searchClaims(keyword: string): Observable<ClaimResponse[]> {
-
-  return this.http.get<ClaimResponse[]>(
-    `${this.apiUrl}/search?keyword=${keyword}`
-  );
-
-}
 
 }

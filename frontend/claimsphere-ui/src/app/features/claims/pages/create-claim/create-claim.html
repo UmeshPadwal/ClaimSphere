@@ -1,138 +1,662 @@
-<div class="claim-container">
+<div class="claim-form-page">
 
-  <div class="claim-card">
+  <!-- ================================
+       PAGE HEADER
+  ================================= -->
 
-    <h2>{{ isEditMode ? 'Update Claim' : 'Create Claim' }}</h2>
+  <div class="page-header">
 
-    <form
-      [formGroup]="claimForm"
-      (ngSubmit)="onSubmit()">
+    <div>
 
-      <div class="form-grid">
+      <button
+        type="button"
+        class="back-link"
+        (click)="cancel()">
 
-        <!-- Claim Number -->
-        <div class="form-group">
-          <label>Claim Number</label>
-          <input
-            type="text"
-            formControlName="claimNumber"
-            placeholder="Enter Claim Number">
-        </div>
+        ← Back to Claims
 
-        <!-- Policy Number -->
-        <div class="form-group">
-          <label>Policy Number</label>
-          <input
-            type="text"
-            formControlName="policyNumber"
-            placeholder="Enter Policy Number">
-        </div>
+      </button>
 
-        <!-- Customer Name -->
-        <div class="form-group">
-          <label>Customer Name</label>
-          <input
-            type="text"
-            formControlName="customerName"
-            placeholder="Enter Customer Name">
-        </div>
+      <h1>
+        {{ isEditMode ? 'Update Claim' : 'Create Claim' }}
+      </h1>
 
-        <!-- Claim Type -->
-        <div class="form-group">
-          <label>Claim Type</label>
+      <p>
+        {{
+          isEditMode
+            ? 'Update the information associated with this insurance claim.'
+            : 'Enter the details to create a new insurance claim.'
+        }}
+      </p>
 
-          <select formControlName="claimType">
+    </div>
 
-            <option value="">Select Claim Type</option>
+    <div class="mode-badge">
 
-            @for(type of claimTypes; track type){
+      {{ isEditMode ? 'EDIT MODE' : 'NEW CLAIM' }}
 
-              <option [value]="type">
-                {{ type }}
-              </option>
+    </div>
 
-            }
+  </div>
 
-          </select>
-        </div>
 
-        <!-- City -->
-        <div class="form-group">
-          <label>City</label>
+  <!-- ================================
+       LOADING STATE
+  ================================= -->
 
-          <select formControlName="city">
+  @if (isLoading) {
 
-            <option value="">Select City</option>
+    <div class="state-card">
 
-            @for(city of cities; track city){
+      <div class="loader"></div>
 
-              <option [value]="city">
-                {{ city }}
-              </option>
+      <h3>
+        Loading Claim...
+      </h3>
 
-            }
+      <p>
+        Please wait while we load the claim details.
+      </p>
 
-          </select>
-        </div>
+    </div>
 
-        <!-- Status -->
-        <div class="form-group">
-          <label>Status</label>
+  }
 
-          <select formControlName="status">
+  <!-- ================================
+       ERROR STATE
+  ================================= -->
 
-            @for(status of statuses; track status){
+  @else if (errorMessage && isEditMode) {
 
-              <option [value]="status">
-                {{ status }}
-              </option>
+    <div class="state-card error-state">
 
-            }
-
-          </select>
-        </div>
-
-        <!-- Amount -->
-        <div class="form-group">
-          <label>Amount</label>
-          <input
-            type="number"
-            formControlName="amount"
-            placeholder="Enter Claim Amount">
-        </div>
-
-        <!-- Incident Date -->
-        <div class="form-group">
-          <label>Incident Date</label>
-          <input
-            type="date"
-            formControlName="incidentDate">
-        </div>
-
-        <!-- Reported Date -->
-        <div class="form-group full-width">
-          <label>Reported Date</label>
-          <input
-            type="date"
-            formControlName="reportedDate">
-        </div>
-
+      <div class="error-icon">
+        !
       </div>
 
-      <div class="button-group">
+      <h3>
+        Unable to Load Claim
+      </h3>
+
+      <p>
+        {{ errorMessage }}
+      </p>
+
+      <div class="state-actions">
 
         <button
           type="button"
-          class="cancel-btn"
+          class="secondary-btn"
           (click)="cancel()">
+
+          ← Back to Claims
+
+        </button>
+
+        <button
+          type="button"
+          class="primary-btn"
+          (click)="retry()">
+
+          Try Again
+
+        </button>
+
+      </div>
+
+    </div>
+
+  }
+
+  <!-- ================================
+       FORM
+  ================================= -->
+
+  @else {
+
+    <form
+      [formGroup]="claimForm"
+      (ngSubmit)="onSubmit()"
+      class="claim-form"
+      novalidate>
+
+
+      <!-- ================================
+           CLAIM INFORMATION
+      ================================= -->
+
+      <section class="form-section">
+
+        <div class="section-header">
+
+          <div class="section-icon blue">
+            #
+          </div>
+
+          <div>
+
+            <h2>
+              Claim Information
+            </h2>
+
+            <p>
+              Basic information about the insurance claim.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div class="form-grid">
+
+
+          <!-- Claim Number -->
+
+          <div class="form-group">
+
+            <label for="claimNumber">
+              Claim Number
+              <span>*</span>
+            </label>
+
+            <input
+              id="claimNumber"
+              type="text"
+              formControlName="claimNumber"
+              placeholder="e.g. CLM000001"
+              autocomplete="off"
+              [class.invalid]="hasError('claimNumber', 'required')">
+
+            @if (
+              hasError(
+                'claimNumber',
+                'required'
+              )
+            ) {
+
+              <small class="error-text">
+                Claim number is required.
+              </small>
+
+            }
+
+            @if (
+              hasError(
+                'claimNumber',
+                'maxlength'
+              )
+            ) {
+
+              <small class="error-text">
+                Maximum 30 characters allowed.
+              </small>
+
+            }
+
+          </div>
+
+
+          <!-- Policy Number -->
+
+          <div class="form-group">
+
+            <label for="policyNumber">
+              Policy Number
+              <span>*</span>
+            </label>
+
+            <input
+              id="policyNumber"
+              type="text"
+              formControlName="policyNumber"
+              placeholder="e.g. POL641408"
+              autocomplete="off"
+              [class.invalid]="hasError('policyNumber', 'required')">
+
+            @if (
+              hasError(
+                'policyNumber',
+                'required'
+              )
+            ) {
+
+              <small class="error-text">
+                Policy number is required.
+              </small>
+
+            }
+
+          </div>
+
+
+          <!-- Claim Type -->
+
+          <div class="form-group">
+
+            <label for="claimType">
+              Claim Type
+              <span>*</span>
+            </label>
+
+            <select
+              id="claimType"
+              formControlName="claimType"
+              [class.invalid]="hasError('claimType', 'required')">
+
+              <option value="">
+                Select Claim Type
+              </option>
+
+              @for (
+                type of claimTypes;
+                track type
+              ) {
+
+                <option [value]="type">
+                  {{ type }}
+                </option>
+
+              }
+
+            </select>
+
+            @if (
+              hasError(
+                'claimType',
+                'required'
+              )
+            ) {
+
+              <small class="error-text">
+                Please select a claim type.
+              </small>
+
+            }
+
+          </div>
+
+
+          <!-- Status -->
+
+          <div class="form-group">
+
+            <label for="status">
+              Status
+              <span>*</span>
+            </label>
+
+            <select
+              id="status"
+              formControlName="status"
+              [class.invalid]="hasError('status', 'required')">
+
+              @for (
+                status of statuses;
+                track status
+              ) {
+
+                <option [value]="status">
+                  {{ status }}
+                </option>
+
+              }
+
+            </select>
+
+            @if (
+              hasError(
+                'status',
+                'required'
+              )
+            ) {
+
+              <small class="error-text">
+                Please select a status.
+              </small>
+
+            }
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- ================================
+           CUSTOMER INFORMATION
+      ================================= -->
+
+      <section class="form-section">
+
+        <div class="section-header">
+
+          <div class="section-icon purple">
+            👤
+          </div>
+
+          <div>
+
+            <h2>
+              Customer Information
+            </h2>
+
+            <p>
+              Customer and location information.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div class="form-grid">
+
+
+          <!-- Customer Name -->
+
+          <div class="form-group">
+
+            <label for="customerName">
+              Customer Name
+              <span>*</span>
+            </label>
+
+            <input
+              id="customerName"
+              type="text"
+              formControlName="customerName"
+              placeholder="Enter customer name"
+              autocomplete="name"
+              [class.invalid]="hasError('customerName', 'required')">
+
+            @if (
+              hasError(
+                'customerName',
+                'required'
+              )
+            ) {
+
+              <small class="error-text">
+                Customer name is required.
+              </small>
+
+            }
+
+          </div>
+
+
+          <!-- City -->
+
+          <div class="form-group">
+
+            <label for="city">
+              City
+              <span>*</span>
+            </label>
+
+            <select
+              id="city"
+              formControlName="city"
+              [class.invalid]="hasError('city', 'required')">
+
+              <option value="">
+                Select City
+              </option>
+
+              @for (
+                city of cities;
+                track city
+              ) {
+
+                <option [value]="city">
+                  {{ city }}
+                </option>
+
+              }
+
+            </select>
+
+            @if (
+              hasError(
+                'city',
+                'required'
+              )
+            ) {
+
+              <small class="error-text">
+                Please select a city.
+              </small>
+
+            }
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- ================================
+           INCIDENT INFORMATION
+      ================================= -->
+
+      <section class="form-section">
+
+        <div class="section-header">
+
+          <div class="section-icon orange">
+            📅
+          </div>
+
+          <div>
+
+            <h2>
+              Incident Information
+            </h2>
+
+            <p>
+              Incident date, reporting date and claim amount.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div class="form-grid">
+
+
+          <!-- Amount -->
+
+          <div class="form-group">
+
+            <label for="amount">
+              Claim Amount
+              <span>*</span>
+            </label>
+
+            <div class="input-with-prefix">
+
+              <span>
+                ₹
+              </span>
+
+              <input
+                id="amount"
+                type="number"
+                formControlName="amount"
+                placeholder="Enter claim amount"
+                min="1"
+                step="1"
+                [class.invalid]="
+                  hasError('amount', 'required') ||
+                  hasError('amount', 'min')
+                ">
+
+            </div>
+
+            @if (
+              hasError(
+                'amount',
+                'required'
+              )
+            ) {
+
+              <small class="error-text">
+                Claim amount is required.
+              </small>
+
+            }
+
+            @if (
+              hasError(
+                'amount',
+                'min'
+              )
+            ) {
+
+              <small class="error-text">
+                Amount must be greater than 0.
+              </small>
+
+            }
+
+          </div>
+
+
+          <!-- Incident Date -->
+
+          <div class="form-group">
+
+            <label for="incidentDate">
+              Incident Date
+              <span>*</span>
+            </label>
+
+            <input
+              id="incidentDate"
+              type="date"
+              formControlName="incidentDate"
+              [class.invalid]="hasError('incidentDate', 'required')">
+
+            @if (
+              hasError(
+                'incidentDate',
+                'required'
+              )
+            ) {
+
+              <small class="error-text">
+                Incident date is required.
+              </small>
+
+            }
+
+          </div>
+
+
+          <!-- Reported Date -->
+
+          <div class="form-group">
+
+            <label for="reportedDate">
+              Reported Date
+              <span>*</span>
+            </label>
+
+            <input
+              id="reportedDate"
+              type="date"
+              formControlName="reportedDate"
+              [class.invalid]="hasError('reportedDate', 'required')">
+
+            @if (
+              hasError(
+                'reportedDate',
+                'required'
+              )
+            ) {
+
+              <small class="error-text">
+                Reported date is required.
+              </small>
+
+            }
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- ================================
+           API ERROR
+      ================================= -->
+
+      @if (
+        errorMessage &&
+        !isEditMode
+      ) {
+
+        <div class="form-error">
+
+          <strong>
+            Something went wrong
+          </strong>
+
+          <span>
+            {{ errorMessage }}
+          </span>
+
+        </div>
+
+      }
+
+
+      <!-- ================================
+           FORM ACTIONS
+      ================================= -->
+
+      <div class="form-actions">
+
+        <button
+          type="button"
+          class="secondary-btn"
+          (click)="cancel()"
+          [disabled]="isSubmitting">
 
           Cancel
 
         </button>
 
-        <button type="submit">
 
-          {{ isEditMode ? 'Update Claim' : 'Save Claim' }}
+        <button
+          type="submit"
+          class="primary-btn"
+          [disabled]="isSubmitting">
+
+          @if (isSubmitting) {
+
+            <span class="button-loader"></span>
+
+            {{
+              isEditMode
+                ? 'Updating...'
+                : 'Creating...'
+            }}
+
+          } @else {
+
+            {{
+              isEditMode
+                ? 'Update Claim'
+                : 'Create Claim'
+            }}
+
+          }
 
         </button>
 
@@ -140,6 +664,6 @@
 
     </form>
 
-  </div>
+  }
 
 </div>

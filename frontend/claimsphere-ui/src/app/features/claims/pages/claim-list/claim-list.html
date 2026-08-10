@@ -12,9 +12,7 @@
 
     </div>
 
-    <button
-      class="create-btn"
-      (click)="goToCreateClaim()">
+    <button class="create-btn" (click)="goToCreateClaim()">
 
       + Create Claim
 
@@ -24,13 +22,75 @@
 
   <!-- Search -->
 
-  <div class="search-container">
+  <div class="filter-bar">
 
-    <input
-      type="text"
-      class="search-input"
-      placeholder="🔍 Search by Claim #, Policy #, Customer, Type, City or Status"
-      [formControl]="searchControl">
+    <input type="text" class="search-input" placeholder="🔍 Search claims..." [formControl]="searchControl">
+
+    <select (change)="onStatusChange($event)">
+
+      <option value="">All Status</option>
+
+      @for(status of statuses; track status){
+
+      @if(status){
+
+      <option [value]="status">
+
+        {{status}}
+
+      </option>
+
+      }
+
+      }
+
+    </select>
+
+    <select (change)="onClaimTypeChange($event)">
+
+      <option value="">All Types</option>
+
+      @for(type of claimTypes; track type){
+
+      @if(type){
+
+      <option [value]="type">
+
+        {{type}}
+
+      </option>
+
+      }
+
+      }
+
+    </select>
+
+    <select (change)="onCityChange($event)">
+
+      <option value="">All Cities</option>
+
+      @for(city of cities; track city){
+
+      @if(city){
+
+      <option [value]="city">
+
+        {{city}}
+
+      </option>
+
+      }
+
+      }
+
+    </select>
+
+    <button class="clear-btn" (click)="clearFilters()">
+
+      Clear
+
+    </button>
 
   </div>
 
@@ -48,9 +108,7 @@
 
     </p>
 
-    <button
-      class="create-btn"
-      (click)="goToCreateClaim()">
+    <button class="create-btn" (click)="goToCreateClaim()">
 
       Create Claim
 
@@ -136,9 +194,7 @@
 
         <td>
 
-          <span
-            class="status"
-            [ngClass]="claim.status.toLowerCase()">
+          <span class="status" [ngClass]="claim.status.toLowerCase()">
 
             {{ claim.status }}
 
@@ -160,25 +216,19 @@
 
         <td class="action-column">
 
-          <button
-            class="view-btn"
-            (click)="viewClaim(claim.id)">
+          <button class="view-btn" (click)="viewClaim(claim.id)">
 
             View
 
           </button>
 
-          <button
-            class="edit-btn"
-            (click)="editClaim(claim.id)">
+          <button class="edit-btn" (click)="editClaim(claim.id)">
 
             Edit
 
           </button>
 
-          <button
-            class="delete-btn"
-            (click)="deleteClaim(claim.id)">
+          <button class="delete-btn" (click)="deleteClaim(claim.id)">
 
             Delete
 
@@ -196,9 +246,7 @@
 
   <div class="pagination">
 
-    <button
-      (click)="previousPage()"
-      [disabled]="page === 0">
+    <button (click)="previousPage()" [disabled]="page === 0">
 
       Previous
 
@@ -210,9 +258,7 @@
 
     </span>
 
-    <button
-      (click)="nextPage()"
-      [disabled]="page === totalPages - 1">
+    <button (click)="nextPage()" [disabled]="page === totalPages - 1">
 
       Next
 

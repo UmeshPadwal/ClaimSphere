@@ -6,15 +6,11 @@ import {
   NgClass
 } from '@angular/common';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { debounceTime, distinctUntilChanged } from 'rxjs';
 
 import { ClaimService } from '../../services/claim.service';
 import { ClaimResponse } from '../../models/claim-response';
 import { Router } from '@angular/router';
-import {
-  debounceTime,
-  distinctUntilChanged,
-  switchMap
-} from 'rxjs';
 
 @Component({
   selector: 'app-claim-list',
@@ -35,20 +31,55 @@ export class ClaimListComponent implements OnInit {
   private router = inject(Router);
 
   claims: ClaimResponse[] = [];
-  isSearching = false;
 
   page = 0;
-
   size = 10;
 
   totalElements = 0;
-
   totalPages = 0;
+
+  keyword = '';
+  status = '';
+  city = '';
+  claimType = '';
+
+  sortBy = 'id';
+  direction = 'asc';
+
+  isSearching = false;
 
   searchControl = new FormControl('');
 
+  statuses = [
+    '',
+    'OPEN',
+    'PENDING',
+    'IN_PROGRESS',
+    'CLOSED'
+  ];
+
+  claimTypes = [
+    '',
+    'Vehicle',
+    'Health',
+    'Property',
+    'Travel'
+  ];
+
+  cities = [
+    '',
+    'Pune',
+    'Mumbai',
+    'Delhi',
+    'Bangalore',
+    'Hyderabad',
+    'Chennai',
+    'Ahmedabad',
+    'Kolkata'
+  ];
+
   ngOnInit(): void {
-    console.log('ClaimListComponent initialized');
+
     this.loadClaims();
 
     this.searchControl.valueChanges
@@ -56,38 +87,18 @@ export class ClaimListComponent implements OnInit {
 
         debounceTime(300),
 
-        distinctUntilChanged(),
-
-        switchMap(value => {
-
-          this.isSearching = !!value?.trim();
-
-          if (!value?.trim()) {
-
-            this.loadClaims();
-
-            return [];
-
-          }
-
-          return this.claimService.searchClaims(value);
-
-        })
+        distinctUntilChanged()
 
       )
-      .subscribe({
+      .subscribe(value => {
 
-        next: response => {
+        this.keyword = value?.trim() ?? '';
 
-          this.claims = response;
+        this.isSearching = this.keyword.length > 0;
 
-        },
+        this.page = 0;
 
-        error: error => {
-
-          console.error(error);
-
-        }
+        this.loadClaims();
 
       });
 
@@ -95,27 +106,43 @@ export class ClaimListComponent implements OnInit {
 
   private loadClaims(): void {
 
-    this.claimService
-      .getClaimsPage(this.page, this.size)
-      .subscribe({
+    this.claimService.getClaimsPage(
 
-        next: response => {
+      this.page,
 
-          this.claims = response.content;
+      this.size,
 
-          this.totalElements = response.totalElements;
+      this.keyword,
 
-          this.totalPages = response.totalPages;
+      this.status,
 
-        },
+      this.city,
 
-        error: error => {
+      this.claimType,
 
-          console.error(error);
+      this.sortBy,
 
-        }
+      this.direction
 
-      });
+    ).subscribe({
+
+      next: response => {
+
+        this.claims = response.content;
+
+        this.totalElements = response.totalElements;
+
+        this.totalPages = response.totalPages;
+
+      },
+
+      error: error => {
+
+        console.error(error);
+
+      }
+
+    });
 
   }
 
@@ -143,6 +170,58 @@ export class ClaimListComponent implements OnInit {
 
   }
 
+  onStatusChange(event: Event): void {
+
+    this.status = (event.target as HTMLSelectElement).value;
+
+    this.page = 0;
+
+    this.loadClaims();
+
+  }
+
+  onClaimTypeChange(event: Event): void {
+
+    this.claimType = (event.target as HTMLSelectElement).value;
+
+    this.page = 0;
+
+    this.loadClaims();
+
+  }
+
+  onCityChange(event: Event): void {
+
+    this.city = (event.target as HTMLSelectElement).value;
+
+    this.page = 0;
+
+    this.loadClaims();
+
+  }
+
+  clearFilters(): void {
+
+    this.status = '';
+
+    this.city = '';
+
+    this.claimType = '';
+
+    this.keyword = '';
+
+    this.searchControl.setValue('', {
+
+      emitEvent: false
+
+    });
+
+    this.page = 0;
+
+    this.loadClaims();
+
+  }
+
   goToCreateClaim(): void {
 
     this.router.navigate(['/claims/create']);
@@ -163,37 +242,27 @@ export class ClaimListComponent implements OnInit {
 
   deleteClaim(id: number): void {
 
-    const confirmed = confirm(
-      'Are you sure you want to delete this claim?'
-    );
-
-    if (!confirmed) {
+    if (!confirm('Are you sure you want to delete this claim?')) {
 
       return;
 
     }
 
-    this.claimService
-      .deleteClaim(id)
-      .subscribe({
+    this.claimService.deleteClaim(id).subscribe({
 
-        next: () => {
+      next: () => {
 
-          alert('Claim deleted successfully!');
+        this.loadClaims();
 
-          this.loadClaims();
+      },
 
-        },
+      error: error => {
 
-        error: error => {
+        console.error(error);
 
-          console.error(error);
+      }
 
-          alert('Unable to delete claim.');
-
-        }
-
-      });
+    });
 
   }
 
