@@ -2,7 +2,6 @@ package claimsphere_api.controller;
 
 import claimsphere_api.dto.ClaimRequest;
 import claimsphere_api.dto.ClaimResponse;
-import claimsphere_api.entity.Claim;
 import claimsphere_api.service.ClaimService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.PageRequest;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import java.util.List;
+
 
 @RestController
 @RequestMapping("/api/claims")
@@ -88,6 +88,14 @@ public class ClaimController {
 
             @RequestParam(defaultValue = "10") int size,
 
+            @RequestParam(required = false) String keyword,
+
+            @RequestParam(required = false) String status,
+
+            @RequestParam(required = false) String city,
+
+            @RequestParam(required = false) String claimType,
+
             @RequestParam(defaultValue = "id") String sortBy,
 
             @RequestParam(defaultValue = "asc") String direction
@@ -95,13 +103,23 @@ public class ClaimController {
     ) {
 
         Sort sort = direction.equalsIgnoreCase("desc")
+
                 ? Sort.by(sortBy).descending()
+
                 : Sort.by(sortBy).ascending();
 
         Pageable pageable = PageRequest.of(page, size, sort);
 
         return ResponseEntity.ok(
-                claimService.getClaims(pageable)
+
+                claimService.getClaims(
+                        keyword,
+                        status,
+                        city,
+                        claimType,
+                        pageable
+                )
+
         );
 
     }

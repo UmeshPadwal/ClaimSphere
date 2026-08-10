@@ -22,5 +22,11 @@ public interface ClaimService {
 
     List<ClaimResponse> searchClaims(String keyword);
 
-    Page<ClaimResponse> getClaims(Pageable pageable);
+    Page<ClaimResponse> getClaims(
+            String keyword,
+            String status,
+            String city,
+            String claimType,
+            Pageable pageable
+    );
 }

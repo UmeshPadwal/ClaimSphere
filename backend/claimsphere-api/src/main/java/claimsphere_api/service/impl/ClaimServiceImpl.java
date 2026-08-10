@@ -6,8 +6,10 @@ import claimsphere_api.entity.Claim;
 import claimsphere_api.exception.ResourceNotFoundException;
 import claimsphere_api.repository.ClaimRepository;
 import claimsphere_api.service.ClaimService;
+import claimsphere_api.specification.ClaimSpecification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -132,10 +134,30 @@ public class ClaimServiceImpl implements ClaimService {
     }
 
     @Override
-    public Page<ClaimResponse> getClaims(Pageable pageable) {
+    public Page<ClaimResponse> getClaims(
+
+            String keyword,
+            String status,
+            String city,
+            String claimType,
+            Pageable pageable
+
+    ) {
+
+        Specification<Claim> specification = Specification
+
+                .where(ClaimSpecification.hasKeyword(keyword))
+
+                .and(ClaimSpecification.hasStatus(status))
+
+                .and(ClaimSpecification.hasCity(city))
+
+                .and(ClaimSpecification.hasClaimType(claimType));
 
         return claimRepository
-                .findAll(pageable)
+
+                .findAll(specification, pageable)
+
                 .map(this::mapToResponse);
 
     }
