@@ -1,43 +1,61 @@
 <header class="header">
 
-    <div>
+  <div class="header-info">
 
-        <h2>Welcome Back 👋</h2>
+    <h2>Welcome Back 👋</h2>
 
-        <p>Manage your insurance claims efficiently</p>
+    <p>
+      Manage your insurance claims efficiently
+    </p>
+
+  </div>
+
+
+  <div class="header-right">
+
+    <button
+      type="button"
+      class="notification"
+      aria-label="Notifications">
+
+      <mat-icon>
+        notifications
+      </mat-icon>
+
+    </button>
+
+
+    <div class="profile">
+
+      <div class="avatar">
+        U
+      </div>
+
+      <div class="profile-info">
+
+        <strong>Umesh</strong><br>
+
+        <small>
+          Java-Angular Developer
+        </small>
+
+      </div>
+
+      <button
+        type="button"
+        class="logout-btn"
+        (click)="logout()">
+
+        <mat-icon>
+          logout
+        </mat-icon>
+
+        <span>Logout</span>
+
+      </button>
 
     </div>
 
-    <div class="header-right">
-
-        <button class="notification">
-
-            <mat-icon>
-
-                notifications
-
-            </mat-icon>
-
-        </button>
-
-        <div class="profile">
-
-            <div class="avatar">
-
-                U
-
-            </div>
-
-            <div>
-
-                <strong>Umesh</strong><br>
-
-                <small>Java-Angular Developer</small>
-
-            </div>
-
-        </div>
-
-    </div>
+  </div>
 
 </header>

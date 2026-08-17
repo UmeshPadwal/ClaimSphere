@@ -1,0 +1,129 @@
+<div class="login-page">
+
+  <div class="login-card">
+
+    <div class="brand-section">
+
+      <div class="brand-icon">
+        🛡️
+      </div>
+
+      <h1>ClaimSphere</h1>
+
+      <p>Insurance Portal</p>
+
+    </div>
+
+    <div class="login-content">
+
+      <h2>Welcome Back 👋</h2>
+
+      <p class="subtitle">
+        Sign in to manage your insurance claims
+      </p>
+
+      @if (errorMessage) {
+
+        <div class="error-message">
+          {{ errorMessage }}
+        </div>
+
+      }
+
+      <form
+        [formGroup]="loginForm"
+        (ngSubmit)="onSubmit()">
+
+        <div class="form-group">
+
+          <label for="username">
+            Username
+          </label>
+
+          <input
+            id="username"
+            type="text"
+            formControlName="username"
+            placeholder="Enter username"
+            autocomplete="username">
+
+          @if (
+            loginForm.controls.username.touched &&
+            loginForm.controls.username.invalid
+          ) {
+
+            <small>
+              Username is required.
+            </small>
+
+          }
+
+        </div>
+
+        <div class="form-group">
+
+          <label for="password">
+            Password
+          </label>
+
+          <input
+            id="password"
+            type="password"
+            formControlName="password"
+            placeholder="Enter password"
+            autocomplete="current-password">
+
+          @if (
+            loginForm.controls.password.touched &&
+            loginForm.controls.password.invalid
+          ) {
+
+            <small>
+              Password is required.
+            </small>
+
+          }
+
+        </div>
+
+        <button
+          type="submit"
+          [disabled]="isLoading">
+
+          @if (isLoading) {
+
+            <span>
+              Signing in...
+            </span>
+
+          } @else {
+
+            <span>
+              Sign In
+            </span>
+
+          }
+
+        </button>
+
+      </form>
+
+      <!-- <div class="demo-info">
+
+        <strong>Demo credentials</strong>
+
+        <span>
+          Username: admin
+        </span>
+
+        <span>
+          Password: admin123
+        </span>
+
+      </div> -->
+
+    </div>
+
+  </div>
+
+</div>

@@ -1,9 +1,29 @@
 import { Routes } from '@angular/router';
 
+import { authGuard } from './core/guards/auth.guard';
+
 export const routes: Routes = [
+
+  // =========================
+  // PUBLIC ROUTES
+  // =========================
+
+  {
+    path: 'login',
+    loadComponent: () =>
+      import('./features/auth/login/login')
+        .then(m => m.LoginComponent)
+  },
+
+
+  // =========================
+  // PROTECTED APPLICATION
+  // =========================
 
   {
     path: '',
+    canActivate: [authGuard],
+
     loadComponent: () =>
       import('./core/layout/app-layout/app-layout')
         .then(m => m.AppLayoutComponent),
@@ -53,6 +73,11 @@ export const routes: Routes = [
 
     ]
   },
+
+
+  // =========================
+  // FALLBACK
+  // =========================
 
   {
     path: '**',
