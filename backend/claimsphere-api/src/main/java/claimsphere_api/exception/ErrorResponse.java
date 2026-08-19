@@ -8,18 +8,23 @@ public class ErrorResponse {
     private int status;
     private String error;
     private String message;
+    private String path;
 
     public ErrorResponse() {
     }
 
-    public ErrorResponse(LocalDateTime timestamp,
-                         int status,
-                         String error,
-                         String message) {
+    public ErrorResponse(
+            LocalDateTime timestamp,
+            int status,
+            String error,
+            String message,
+            String path) {
+
         this.timestamp = timestamp;
         this.status = status;
         this.error = error;
         this.message = message;
+        this.path = path;
     }
 
     public LocalDateTime getTimestamp() {
@@ -52,5 +57,13 @@ public class ErrorResponse {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
     }
 }
